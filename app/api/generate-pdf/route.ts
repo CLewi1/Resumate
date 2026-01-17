@@ -37,7 +37,7 @@ export async function POST(request: Request) {
             }
         });
         data = await statusResponse.json();
-        console.log("Status check response:", data.data.status, data.data.id);
+        console.log("Status check response:", data.data.status, data.data.id, data);
     }
 
     // If succeeded, fetch and return the PDF
