@@ -1,12 +1,14 @@
 'use client'
 
 import { Cpu, LayoutDashboard, Briefcase, FileText, Settings, Bell, Sparkles } from 'lucide-react'
+import { useRouter } from 'next/navigation';
 
 export function NavBar() {
 
+    const router = useRouter();
 
-    function onNavigate(arg0: string): void {
-        throw new Error('Function not implemented.');
+    function onNavigate(page: string): void {
+        router.push(page)
     }
 
     return (
@@ -14,7 +16,7 @@ export function NavBar() {
       <nav className="sticky top-0 z-30 w-full border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-2 font-bold text-xl tracking-tight cursor-pointer" onClick={() => onNavigate('landing')}>
+          <div className="flex items-center gap-2 font-bold text-xl tracking-tight cursor-pointer" onClick={() => onNavigate('/')}>
             <div className="w-8 h-8 bg-linear-to-tr from-violet-600 to-indigo-600 rounded-lg flex items-center justify-center text-white">
               <Cpu size={18} />
             </div>
@@ -23,16 +25,16 @@ export function NavBar() {
 
           {/* Navigation Links - Centered */}
           <div className="hidden md:flex items-center gap-1 bg-slate-900/50 p-1 rounded-lg border border-slate-800/50">
-            <button className="flex items-center gap-2 px-4 py-1.5 bg-slate-800 text-white rounded-md text-sm font-medium shadow-sm transition-all">
+            <button className="flex items-center gap-2 px-4 py-1.5 bg-slate-800 text-white rounded-md text-sm font-medium shadow-sm transition-all" onClick={() => onNavigate('/dashboard')}>
               <LayoutDashboard size={16} className="text-violet-400" /> Dashboard
             </button>
-            <button className="flex items-center gap-2 px-4 py-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-md text-sm font-medium transition-colors">
+            <button className="flex items-center gap-2 px-4 py-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-md text-sm font-medium transition-colors" onClick={() => onNavigate('/jobs')}>
               <Briefcase size={16} /> Job Tracker
             </button>
-            <button className="flex items-center gap-2 px-4 py-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-md text-sm font-medium transition-colors">
+            <button className="flex items-center gap-2 px-4 py-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-md text-sm font-medium transition-colors" onClick={() => onNavigate('/resumes')}>
               <FileText size={16} /> My Resumes
             </button>
-            <button className="flex items-center gap-2 px-4 py-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-md text-sm font-medium transition-colors">
+            <button className="flex items-center gap-2 px-4 py-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-md text-sm font-medium transition-colors" onClick={() => onNavigate('/settings')}>
               <Settings size={16} /> Settings
             </button>
           </div>
