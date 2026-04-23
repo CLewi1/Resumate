@@ -19,12 +19,20 @@ const navLinks = [
     { name: "My Resumes", path: "/resumes", icon: FileText },
 ];
 
-export function NavBar() {
+interface NavBarProps {
+    userEmail?: string;
+}
+
+export function NavBar({ userEmail }: NavBarProps) {
     const router = useRouter();
     const pathname = usePathname();
 
     function onNavigate(page: string): void {
         router.push(page);
+    }
+
+    function onSignOut(): void {
+        router.push("/auth/signout");
     }
 
     return (
@@ -97,11 +105,18 @@ export function NavBar() {
                         <Sparkles size={16} /> New Resume
                     </button>
 
+                    <button
+                        onClick={onSignOut}
+                        className="text-sm text-slate-300 hover:text-white transition-colors"
+                    >
+                        Sign out
+                    </button>
+
                     <div className="flex items-center gap-3 pl-2 cursor-pointer hover:opacity-80 transition-opacity">
                         <div className="w-9 h-9 rounded-full bg-linear-to-br from-purple-500 to-blue-500 ring-2 ring-slate-800"></div>
                         <div className="hidden lg:block overflow-hidden text-left">
                             <p className="text-sm font-medium text-white truncate leading-none mb-1">
-                                Alex Dev
+                                {userEmail ?? "Signed In"}
                             </p>
                             <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider leading-none">
                                 Pro Plan

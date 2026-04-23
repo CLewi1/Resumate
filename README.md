@@ -16,6 +16,24 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Supabase Auth Setup
+
+This project uses Supabase SSR auth with OAuth login routes.
+
+Add these variables to your local environment:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=your-project-url
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
+```
+
+In the Supabase dashboard, configure your OAuth providers (GitHub/Google) and add these redirect URLs:
+
+- `http://localhost:3000/auth/callback`
+- `https://your-production-domain.com/auth/callback`
+
+Protected app routes (`/dashboard`, `/jobs`, `/saved`, `/resumes`) require an authenticated Supabase user.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
