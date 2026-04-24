@@ -1,401 +1,255 @@
-import { Search, Sparkles } from "lucide-react";
+import {
+    Send,
+    Calendar,
+    FileText,
+    TrendingUp,
+    CheckCircle2,
+    Bookmark,
+    CodeXml,
+} from "lucide-react";
 
 export default function Dashboard() {
-    const stats = [
-        {
-            label: "Jobs Applied",
-            value: "12",
-            delta: "+3 this week",
-            color: "#8b5cf6",
-            fill: "#ede9fe",
-            data: [3, 5, 4, 7, 6, 9, 12],
-        },
-        {
-            label: "Saved Jobs",
-            value: "27",
-            delta: "+5 this week",
-            color: "#3b82f6",
-            fill: "#dbeafe",
-            data: [10, 12, 14, 16, 18, 22, 27],
-        },
-
-        {
-            label: "Interviews",
-            value: "3",
-            delta: "2 upcoming",
-            color: "#a855f7",
-            fill: "#f3e8ff",
-            data: [0, 0, 1, 1, 1, 2, 3],
-        },
-    ];
-
-    const Sparkline = ({
-        data,
-        color,
-        fill,
-    }: {
-        data: number[];
-        color: string;
-        fill: string;
-    }) => {
-        const w = 120,
-            h = 40,
-            pad = 2;
-        const min = Math.min(...data),
-            max = Math.max(...data);
-        const range = max - min || 1;
-        const pts = data.map((v, i) => [
-            pad + (i / (data.length - 1)) * (w - pad * 2),
-            pad + (1 - (v - min) / range) * (h - pad * 2),
-        ]);
-        const line = pts
-            .map((p, i) => `${i === 0 ? "M" : "L"}${p[0]},${p[1]}`)
-            .join(" ");
-        const area = `${line} L${pts[pts.length - 1][0]},${h} L${pts[0][0]},${h} Z`;
-        return (
-            <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-10">
-                <path d={area} fill={fill} opacity="0.6" />
-                <path
-                    d={line}
-                    fill="none"
-                    stroke={color}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                />
-                <circle
-                    cx={pts[pts.length - 1][0]}
-                    cy={pts[pts.length - 1][1]}
-                    r="3"
-                    fill={color}
-                />
-            </svg>
-        );
-    };
-
-    const activity = [
-        {
-            action: "Applied to",
-            target: "Senior React Developer",
-            company: "TechCorp",
-            time: "2h ago",
-            status: "applied",
-            logo: "🚀",
-        },
-        {
-            action: "Saved",
-            target: "Full Stack Engineer",
-            company: "StartupXYZ",
-            time: "5h ago",
-            status: "saved",
-            logo: "⚡",
-        },
-        {
-            action: "Generated resume for",
-            target: "Frontend Developer",
-            company: "WebSolutions",
-            time: "1d ago",
-            status: "generated",
-            logo: "🎯",
-        },
-        {
-            action: "Applied to",
-            target: "Software Engineer Intern",
-            company: "Google",
-            time: "2d ago",
-            status: "applied",
-            logo: "🔵",
-        },
-        {
-            action: "Saved",
-            target: "React Developer",
-            company: "ShopifyPlus",
-            time: "3d ago",
-            status: "saved",
-            logo: "🛍️",
-        },
-    ];
-
-    const pipeline = [
-        {
-            stage: "Applied",
-            count: 12,
-            color: "bg-blue-500",
-            light: "bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
-        },
-        {
-            stage: "Screening",
-            count: 5,
-            color: "bg-yellow-400",
-            light: "bg-yellow-50 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
-        },
-        {
-            stage: "Interview",
-            count: 3,
-            color: "bg-purple-500",
-            light: "bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
-        },
-        {
-            stage: "Offer",
-            count: 1,
-            color: "bg-fuchsia-500",
-            light: "bg-fuchsia-50 text-fuchsia-700 dark:bg-fuchsia-900/30 dark:text-fuchsia-400",
-        },
-        {
-            stage: "Rejected",
-            count: 3,
-            color: "bg-red-400",
-            light: "bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-400",
-        },
-    ];
-
-    const jobListings = [
-        {
-            id: 1,
-            title: "Senior React Developer",
-            company: "TechCorp",
-            location: "Remote",
-            tags: ["React", "JavaScript", "Full-Time"],
-            logo: "🚀",
-        },
-        {
-            id: 2,
-            title: "Full Stack Engineer",
-            company: "StartupXYZ",
-            location: "New York, NY",
-            tags: ["Node.js", "React", "AWS"],
-            logo: "⚡",
-        },
-        {
-            id: 3,
-            title: "Frontend Developer",
-            company: "WebSolutions",
-            location: "San Francisco, CA",
-            tags: ["HTML", "CSS", "JavaScript"],
-            logo: "🎯",
-        },
-        {
-            id: 4,
-            title: "Software Engineer Intern",
-            company: "Google",
-            location: "Mountain View, CA",
-            tags: ["Python", "C++", "Internship"],
-            logo: "🔵",
-        },
-        {
-            id: 5,
-            title: "React Developer",
-            company: "ShopifyPlus",
-            location: "Remote",
-            tags: ["React", "E-commerce", "Full-Time"],
-            logo: "🛍️",
-        },
-    ];
-
-    const recommended = jobListings.slice(0, 2);
-
-    const statusColors: Record<string, string> = {
-        applied:
-            "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
-        saved: "bg-gray-100 text-gray-600 dark:bg-zinc-800 dark:text-gray-400",
-        generated:
-            "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-400",
-    };
-
     return (
-        <>
-            {/* Header */}
-            <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col gap-8 w-full font-mono text-slate-900 bg-[#fcfdfd] min-h-screen">
+            <header className="flex justify-between items-center py-2 border-transparent">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                        Welcome back, User 👋
+                    <h1 className="text-2xl font-bold font-sans">
+                        Good afternoon, Colin.
                     </h1>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
-                        Here&apos;s what&apos;s happening with your job search
+                    <p className="text-slate-500 font-sans mt-1 text-sm">
+                        Let&apos;s ship some applications today.
                     </p>
                 </div>
-                <button className="flex items-center gap-2 px-4 py-2 bg-violet-600 text-white rounded-xl text-sm font-medium hover:bg-violet-700 transition-colors shadow">
-                    <Search className="w-4 h-4" /> Find Jobs
+                <button className="border border-slate-200 bg-white px-4 py-2 rounded-md text-sm text-slate-600 flex items-center gap-2 font-sans font-medium hover:bg-slate-50 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
+                    <span className="text-slate-400">{"</>"}</span> Quick
+                    Actions <span className="text-slate-400">⌄</span>
                 </button>
-            </div>
+            </header>
 
-            {/* Stat cards */}
-            <div className="grid grid-cols-3 gap-4 mb-8">
-                {stats.map((s, i) => (
-                    <div
-                        key={i}
-                        className="bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 p-5"
-                    >
-                        <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
-                            {s.label}
-                        </p>
-                        <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">
-                            {s.value}
-                        </p>
-                        <p
-                            className="text-xs font-medium mb-3"
-                            style={{ color: s.color }}
-                        >
-                            {s.delta}
-                        </p>
-                        <Sparkline
-                            data={s.data}
-                            color={s.color}
-                            fill={s.fill}
-                        />
-                    </div>
-                ))}
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6 mb-6">
-                {/* Application Pipeline */}
-                <div className="bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 p-6">
-                    <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-5">
-                        Application Pipeline
-                    </h2>
-                    <div className="space-y-3">
-                        {pipeline.map((p, i) => {
-                            const total = pipeline.reduce(
-                                (a, x) => a + x.count,
-                                0,
-                            );
-                            const pct = Math.round((p.count / total) * 100);
-                            return (
-                                <div key={i}>
-                                    <div className="flex items-center justify-between mb-1">
-                                        <span className="text-sm text-gray-600 dark:text-gray-300">
-                                            {p.stage}
-                                        </span>
-                                        <div className="flex items-center gap-2">
-                                            <span className="text-xs text-gray-400 dark:text-gray-500">
-                                                {pct}%
-                                            </span>
-                                            <span
-                                                className={`px-2 py-0.5 rounded-full text-xs font-semibold ${p.light}`}
-                                            >
-                                                {p.count}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className="w-full bg-gray-100 dark:bg-slate-800 rounded-full h-2">
-                                        <div
-                                            className={`h-2 rounded-full ${p.color} transition-all`}
-                                            style={{ width: `${pct}%` }}
-                                        ></div>
-                                    </div>
+            <main className="pb-12 flex flex-col gap-6">
+                {/* Stats Row */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div className="border border-slate-200 rounded-[1rem] p-6 bg-white shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex flex-col justify-between min-h-[140px]">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <div className="text-slate-600 font-sans font-medium mb-1 text-sm">
+                                    Applications
                                 </div>
-                            );
-                        })}
-                    </div>
-                    <div className="mt-5 pt-4 border-t border-gray-100 dark:border-slate-800 flex items-center justify-between text-sm">
-                        <span className="text-gray-400 dark:text-gray-500">
-                            Total applications
-                        </span>
-                        <span className="font-bold text-gray-900 dark:text-gray-100">
-                            {pipeline.reduce((a, x) => a + x.count, 0)}
-                        </span>
-                    </div>
-                </div>
-
-                {/* Recent Activity */}
-                <div className="bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 p-6">
-                    <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                        Recent Activity
-                    </h2>
-                    <div className="space-y-3">
-                        {activity.map((a, i) => (
-                            <div key={i} className="flex items-center gap-3">
-                                <div className="w-9 h-9 bg-linear-to-br from-violet-950/50 to-purple-900/50 border border-violet-900/50 rounded-lg flex items-center justify-center text-base shrink-0">
-                                    {a.logo}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <p className="text-sm text-gray-700 dark:text-gray-200 truncate">
-                                        <span className="text-gray-400 dark:text-gray-500">
-                                            {a.action}
-                                        </span>{" "}
-                                        <span className="font-medium">
-                                            {a.target}
-                                        </span>
-                                    </p>
-                                    <p className="text-xs text-gray-400 dark:text-gray-500">
-                                        {a.company} · {a.time}
-                                    </p>
-                                </div>
-                                <span
-                                    className={`px-2 py-0.5 rounded-full text-xs font-medium shrink-0 ${statusColors[a.status]}`}
-                                >
-                                    {a.status}
-                                </span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6">
-                {/* Recommended Jobs */}
-                <div className="bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 p-6 mb-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">
-                            Recommended for You
-                        </h2>
-                        <button className="text-xs text-violet-600 dark:text-violet-400 hover:underline font-medium">
-                            View all →
-                        </button>
-                    </div>
-                    <div className="grid gap-4">
-                        {recommended.map((job) => (
-                            <div
-                                key={job.id}
-                                className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 dark:border-slate-800 hover:border-violet-200 dark:hover:border-violet-800/50 hover:bg-violet-50/30 dark:hover:bg-violet-900/20 transition-all cursor-pointer"
-                            >
-                                <div className="w-10 h-10 bg-linear-to-br from-violet-50 to-purple-100 dark:from-violet-950/50 dark:to-purple-900/50 border border-violet-100 dark:border-violet-900/50 rounded-xl flex items-center justify-center text-lg shrink-0">
-                                    {job.logo}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
-                                        {job.title}
-                                    </p>
-                                    <p className="text-xs text-gray-400 dark:text-gray-500">
-                                        {job.company} · {job.location}
-                                    </p>
-                                    <div className="flex gap-1 mt-1 flex-wrap">
-                                        {job.tags.slice(0, 3).map((t, i) => (
-                                            <span
-                                                key={i}
-                                                className="px-1.5 py-0.5 bg-violet-50 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 rounded text-xs border border-violet-100 dark:border-violet-800/50"
-                                            >
-                                                {t}
-                                            </span>
-                                        ))}
-                                    </div>
+                                <div className="text-[2rem] font-bold leading-none font-sans mt-2">
+                                    18
                                 </div>
                             </div>
-                        ))}
-                        <div className="p-3 bg-linear-to-r from-violet-500 to-purple-600 rounded-xl text-white flex flex-col justify-between">
-                            <div className="flex items-center gap-2 mb-1">
-                                <Sparkles className="w-4 h-4" />
-                                <span className="text-sm font-semibold">
-                                    Boost your chances
-                                </span>
+                            <div className="w-10 h-10 rounded-lg bg-emerald-50/80 flex items-center justify-center text-emerald-600">
+                                <Send size={18} className="-translate-y-0.5" />
                             </div>
-                            <p className="text-xs text-violet-100 mb-3">
-                                Paste a job description to generate a tailored
-                                resume instantly.
-                            </p>
-                            <button className="px-3 py-1.5 bg-white text-violet-700 dark:bg-slate-950 dark:text-violet-400 rounded-lg text-xs font-semibold hover:bg-violet-50 dark:hover:bg-slate-900 transition-colors self-start">
-                                Try Custom Job Gen →
-                            </button>
+                        </div>
+                        <div className="text-emerald-600 text-xs flex items-center gap-1.5 font-sans font-medium mt-auto pt-4">
+                            <span className="w-1 h-1 rounded-full bg-emerald-500"></span>{" "}
+                            4 this week
+                        </div>
+                    </div>
+
+                    <div className="border border-slate-200 rounded-[1rem] p-6 bg-white shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex flex-col justify-between min-h-[140px]">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <div className="text-slate-600 font-sans font-medium mb-1 text-sm">
+                                    Interviews
+                                </div>
+                                <div className="text-[2rem] font-bold leading-none font-sans mt-2">
+                                    3
+                                </div>
+                            </div>
+                            <div className="w-10 h-10 rounded-lg bg-emerald-50/80 flex items-center justify-center text-emerald-600">
+                                <Calendar size={18} />
+                            </div>
+                        </div>
+                        <div className="text-emerald-600 text-xs flex items-center gap-1.5 font-sans font-medium mt-auto pt-4">
+                            <span className="w-1 h-1 rounded-full bg-emerald-500"></span>{" "}
+                            1 upcoming
+                        </div>
+                    </div>
+
+                    <div className="border border-slate-200 rounded-[1rem] p-6 bg-white shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex flex-col justify-between min-h-[140px]">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <div className="text-slate-600 font-sans font-medium mb-1 text-sm">
+                                    Resumes Generated
+                                </div>
+                                <div className="text-[2rem] font-bold leading-none font-sans mt-2">
+                                    12
+                                </div>
+                            </div>
+                            <div className="w-10 h-10 rounded-lg bg-emerald-50/80 flex items-center justify-center text-emerald-600">
+                                <FileText size={18} />
+                            </div>
+                        </div>
+                        <div className="text-emerald-600 text-xs flex items-center gap-1.5 font-sans font-medium mt-auto pt-4">
+                            <span className="w-1 h-1 rounded-full bg-emerald-500"></span>{" "}
+                            8 this week
+                        </div>
+                    </div>
+
+                    <div className="border border-slate-200 rounded-[1rem] p-6 bg-white shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex flex-col justify-between min-h-[140px]">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <div className="text-slate-600 font-sans font-medium mb-1 text-sm">
+                                    ATS Success Rate
+                                </div>
+                                <div className="text-[2rem] font-bold leading-none font-sans mt-2">
+                                    92%
+                                </div>
+                            </div>
+                            <div className="w-10 h-10 rounded-lg bg-emerald-50/80 flex items-center justify-center text-emerald-600">
+                                <TrendingUp size={18} />
+                            </div>
+                        </div>
+                        <div className="text-emerald-600 text-xs flex items-center gap-1.5 font-sans font-medium mt-auto pt-4">
+                            <span className="w-1 h-1 rounded-full bg-emerald-500"></span>{" "}
+                            +12% vs last week
                         </div>
                     </div>
                 </div>
-                {/* Upcoming Interviews */}
-                <div className="bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 p-6 mb-6">
-                    <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">
-                        Upcoming Interviews
-                    </h2>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-2">
+                    {/* Recent Activity */}
+                    <div className="lg:col-span-2 border border-slate-200 rounded-[1rem] p-8 bg-white shadow-[0_2px_4px_rgba(0,0,0,0.02)] font-sans flex flex-col gap-6 relative">
+                        <div className="flex justify-between items-center mb-2">
+                            <h2 className="font-bold flex items-center text-sm font-mono text-slate-800">
+                                Recent Activity
+                            </h2>
+                            <button className="text-emerald-600 text-xs font-mono font-medium flex items-center gap-1 hover:text-emerald-700 transition-colors">
+                                View all <span>→</span>
+                            </button>
+                        </div>
+
+                        <div className="space-y-0 divide-y divide-slate-100 flex-1">
+                            <div className="flex items-center gap-6 py-5 group">
+                                <div className="w-10 h-10 rounded-full border-2 border-emerald-500/20 bg-emerald-50 flex items-center justify-center text-emerald-600 shrink-0 group-hover:border-emerald-500/40 transition-colors">
+                                    <CheckCircle2 size={18} />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <div className="text-[13px] text-slate-800 truncate">
+                                        Applied to{" "}
+                                        <span className="font-bold">
+                                            Senior Frontend Engineer
+                                        </span>{" "}
+                                        at Vercel
+                                    </div>
+                                    <div className="text-xs text-slate-400 mt-1 font-mono">
+                                        2 hours ago
+                                    </div>
+                                </div>
+                                <div className="bg-emerald-50/80 px-3 py-1 rounded text-[11px] font-bold text-emerald-600 font-mono border border-emerald-100/50">
+                                    Applied
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-6 py-5 group">
+                                <div className="w-10 h-10 rounded-full border-2 border-emerald-500/20 bg-slate-50 flex items-center justify-center text-slate-500 shrink-0 group-hover:border-emerald-500/40 transition-colors">
+                                    <Bookmark size={18} />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <div className="text-[13px] text-slate-800 truncate">
+                                        Saved{" "}
+                                        <span className="font-bold">
+                                            Full Stack Engineer
+                                        </span>{" "}
+                                        at Linear
+                                    </div>
+                                    <div className="text-xs text-slate-400 mt-1 font-mono">
+                                        5 hours ago
+                                    </div>
+                                </div>
+                                <div className="bg-slate-100 px-3 py-1 rounded text-[11px] font-bold text-slate-600 font-mono border border-slate-200/50">
+                                    Saved
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-6 py-5 pt-5 pb-0 group">
+                                <div className="w-10 h-10 rounded-full border-2 border-emerald-500/20 bg-emerald-50 flex items-center justify-center text-emerald-600 shrink-0 group-hover:border-emerald-500/40 transition-colors">
+                                    <CodeXml size={18} />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <div className="text-[13px] text-slate-800 truncate">
+                                        Generated resume for{" "}
+                                        <span className="font-bold">
+                                            Software Engineer
+                                        </span>{" "}
+                                        at Datadog
+                                    </div>
+                                    <div className="text-xs text-slate-400 mt-1 font-mono">
+                                        1 day ago
+                                    </div>
+                                </div>
+                                <div className="bg-emerald-50/80 px-3 py-1 rounded text-[11px] font-bold text-emerald-600 font-mono border border-emerald-100/50">
+                                    Generated
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Next Interview */}
+                    <div className="lg:col-span-1 border border-slate-200 rounded-[1rem] p-8 bg-white shadow-[0_2px_4px_rgba(0,0,0,0.02)] font-sans flex flex-col gap-6 relative">
+                        <div className="flex justify-between items-center mb-2">
+                            <h2 className="font-bold flex items-center text-sm font-mono text-slate-800">
+                                Next Interview
+                            </h2>
+                            <button className="text-emerald-600 text-xs font-mono font-medium flex items-center gap-1 hover:text-emerald-700 transition-colors">
+                                View all <span>→</span>
+                            </button>
+                        </div>
+
+                        <div className="flex gap-4 items-center mt-2">
+                            <div className="w-14 h-14 bg-slate-950 rounded-[0.7rem] flex items-center justify-center text-white font-bold text-2xl shrink-0">
+                                L
+                            </div>
+                            <div className="leading-snug min-w-0">
+                                <div className="font-bold text-slate-900 text-[15px] truncate">
+                                    Linear
+                                </div>
+                                <div className="text-[13px] text-slate-600 mt-0.5 truncate">
+                                    Full Stack Engineer
+                                </div>
+                                <div className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] font-mono text-slate-500 mt-2">
+                                    <div className="flex gap-1.5 items-center">
+                                        <Calendar size={12} /> May 30, 2024
+                                    </div>
+                                    <div className="flex gap-1.5 items-center">
+                                        <span className="text-sm">◷</span> 2:00
+                                        PM PT
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mt-auto pt-4">
+                            <div className="p-5 bg-emerald-50/50 border border-emerald-100/50 rounded-xl flex flex-col gap-3">
+                                <div className="text-emerald-700 text-xs font-mono font-bold">
+                                    Prep ready
+                                </div>
+                                <div className="text-slate-600 text-xs font-mono leading-relaxed">
+                                    We analyzed the role and your resume.
+                                </div>
+                                <button className="bg-white border border-emerald-200/60 text-emerald-700 px-4 py-2 mt-1 rounded-lg text-xs font-mono flex items-center justify-between gap-1.5 hover:bg-emerald-50 transition-colors shadow-sm shadow-emerald-900/5 font-medium group">
+                                    View Prep Kit
+                                    <span className="text-emerald-700 ml-0.5 group-hover:translate-x-0.5 transition-transform">
+                                        →
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
+                    <div className="border border-slate-200 rounded-[1rem] p-8 bg-white shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex flex-col justify-center items-center h-64 text-slate-400 font-mono text-sm">
+                        Pipeline Component Scaffold
+                    </div>
+                    <div className="border border-slate-200 rounded-[1rem] p-8 bg-slate-950 shadow-[0_4px_12px_rgba(0,0,0,0.1)] flex flex-col justify-center items-center h-64 text-slate-500 font-mono text-sm">
+                        Pro Tip Component Scaffold
+                    </div>
+                </div>
+            </main>
+        </div>
     );
 }

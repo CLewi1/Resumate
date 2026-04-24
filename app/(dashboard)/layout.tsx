@@ -1,4 +1,4 @@
-import { NavBar } from "@/components/ui/dashNavBar";
+import { DashboardSidebar } from "@/components/ui/dashboardSidebar";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -17,11 +17,11 @@ export default async function DashboardLayout({
     }
 
     return (
-        <>
-            <header>
-                <NavBar userEmail={user.email} />
-            </header>
-            <main className="container mx-auto px-6 py-8">{children}</main>
-        </>
+        <div className="flex h-screen bg-[#fafafa] overflow-hidden">
+            <DashboardSidebar userEmail={user?.email} />
+            <main className="flex-1 overflow-y-auto px-4 py-8 lg:px-12 bg-[#fcfdfd]">
+                <div className="max-w-[1200px] mx-auto w-full">{children}</div>
+            </main>
+        </div>
     );
 }
