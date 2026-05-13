@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test": "bun test",
     "lint": "eslint",
     "build:ext": "esbuild extension/content.ts extension/background.ts --bundle=false --platform=browser --target=chrome120 --outdir=extension"
   },
@@ -31,6 +32,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "bun-types": "^1.3.14",
     "esbuild": "^0.28.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",

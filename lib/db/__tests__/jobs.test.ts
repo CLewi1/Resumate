@@ -1,3 +1,4 @@
+/// <reference types="bun-types" />
 import { describe, test, expect, beforeEach } from "bun:test";
 import { openDb } from "../index";
 import { makeJobRepository } from "../jobs";
