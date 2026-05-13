@@ -76,7 +76,8 @@ export default function ResumeEditor({
         });
         setIsGenerating(false);
         if (res.ok) {
-            const blob = await res.blob();
+            const buffer = await res.arrayBuffer();
+            const blob = new Blob([buffer], { type: "application/pdf" });
             if (pdfUrl) URL.revokeObjectURL(pdfUrl);
             setPdfUrl(URL.createObjectURL(blob));
         }
@@ -171,8 +172,9 @@ export default function ResumeEditor({
 
                 <ResizablePanel defaultSize={50}>
                     {pdfUrl ? (
-                        <iframe
+                        <embed
                             src={pdfUrl}
+                            type="application/pdf"
                             className="w-full h-full"
                         />
                     ) : (
