@@ -11,6 +11,7 @@
     "build:ext": "esbuild extension/content.ts extension/background.ts --bundle=false --platform=browser --target=chrome120 --outdir=extension"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.96.0",
     "@radix-ui/react-select": "^2.2.6",
     "@radix-ui/react-slot": "^1.2.4",
     "axios": "^1.13.6",
