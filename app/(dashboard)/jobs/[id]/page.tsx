@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getJobRepository } from "@/lib/db/jobs";
+import { getResumeRepository } from "@/lib/db/resumes";
 import { TailorButton } from "./TailorButton";
 
 type Props = { params: Promise<{ id: string }> };
@@ -13,6 +14,8 @@ export default async function JobDetailPage({ params }: Props) {
     const repo = getJobRepository();
     const job = repo.getById(numericId);
     if (!job) notFound();
+
+    const existingResume = getResumeRepository().getByJobId(numericId);
 
     return (
         <div className="max-w-3xl mx-auto py-8 space-y-6">
@@ -30,7 +33,7 @@ export default async function JobDetailPage({ params }: Props) {
                 >
                     View on LinkedIn ↗
                 </Link>
-                <TailorButton jobId={numericId} />
+                <TailorButton jobId={numericId} existingResumeId={existingResume?.id} />
             </div>
 
             <div className="rounded-lg border border-border bg-card p-6">

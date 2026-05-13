@@ -8,20 +8,28 @@ export async function POST(req: NextRequest) {
     const { jobId } = body ?? {};
 
     if (typeof jobId !== "number" || !Number.isInteger(jobId) || jobId < 1) {
-        return NextResponse.json({ error: "jobId is required and must be a positive integer" }, { status: 400 });
+        return NextResponse.json(
+            { error: "jobId is required and must be a positive integer" },
+            { status: 400 },
+        );
     }
 
     const jobRepo = getJobRepository();
     const job = jobRepo.getById(jobId);
     if (!job) {
-        return NextResponse.json({ error: `Job ${jobId} not found` }, { status: 404 });
+        return NextResponse.json(
+            { error: `Job ${jobId} not found` },
+            { status: 404 },
+        );
     }
 
     const resumeRepo = getResumeRepository();
     const master = resumeRepo.getMaster();
     if (!master) {
         return NextResponse.json(
-            { error: "No master resume set. Designate a master resume before tailoring." },
+            {
+                error: "No master resume set. Designate a master resume before tailoring.",
+            },
             { status: 422 },
         );
     }
@@ -29,15 +37,16 @@ export async function POST(req: NextRequest) {
     let changes;
     try {
         changes = await tailorResume(master.latex, job.description);
-    } catch {
+    } catch (err) {
+        console.error("tailorResume failed:", err);
         return NextResponse.json(
-            { error: "AI tailoring failed. Check your ANTHROPIC_API_KEY and try again." },
+            { error: "AI tailoring failed. Check your .env variables and try again." },
             { status: 502 },
         );
     }
 
     const tailored = resumeRepo.save({
-        name: `${job.title} at ${job.company}`,
+        name: `${job.title}_resume`,
         latex: master.latex,
         job_id: job.id,
     });

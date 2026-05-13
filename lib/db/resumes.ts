@@ -92,6 +92,21 @@ export function makeResumeRepository(db: SqliteDb) {
             })();
         },
 
+        delete(id: number): boolean {
+            const exists = !!db.prepare("SELECT id FROM resumes WHERE id = ?").get(id);
+            if (!exists) return false;
+            db.prepare("DELETE FROM resumes WHERE id = ?").run(id);
+            return true;
+        },
+
+        getByJobId(jobId: number): Resume | undefined {
+            return db
+                .prepare(
+                    "SELECT * FROM resumes WHERE job_id = ? AND is_master = 0 ORDER BY created_at DESC LIMIT 1",
+                )
+                .get(jobId) as Resume | undefined;
+        },
+
         list(): Resume[] {
             return db
                 .prepare(

@@ -96,7 +96,7 @@ describe("POST /api/tailor", () => {
         await POST(makeRequest({ jobId: 1 }));
 
         expect(mockSaveResume).toHaveBeenCalledWith({
-            name: "Software Engineer at Acme Corp",
+            name: "Software Engineer_resume",
             latex: SAMPLE_MASTER.latex,
             job_id: 1,
         });
