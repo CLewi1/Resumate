@@ -1,4 +1,4 @@
-import type { Database } from "bun:sqlite";
+import type Database from "better-sqlite3";
 import { getDb } from "./index";
 
 export type Job = {
@@ -19,9 +19,9 @@ export type NewJob = {
 
 export type JobRepository = ReturnType<typeof makeJobRepository>;
 
-export function makeJobRepository(db: Database) {
+export function makeJobRepository(db: Database.Database) {
     return {
-        insert(job: NewJob): Job | null {
+        insert(job: NewJob): Job | undefined {
             return db
                 .prepare(
                     `INSERT OR IGNORE INTO jobs (title, company, description, linkedin_url)
@@ -29,17 +29,23 @@ export function makeJobRepository(db: Database) {
                      RETURNING *`,
                 )
                 .get({
-                    $title: job.title,
-                    $company: job.company,
-                    $description: job.description,
-                    $linkedin_url: job.linkedin_url,
-                }) as Job | null;
+                    title: job.title,
+                    company: job.company,
+                    description: job.description,
+                    linkedin_url: job.linkedin_url,
+                }) as Job | undefined;
         },
 
-        getById(id: number): Job | null {
+        getById(id: number): Job | undefined {
             return db
                 .prepare("SELECT * FROM jobs WHERE id = ?")
-                .get(id) as Job | null;
+                .get(id) as Job | undefined;
+        },
+
+        getByLinkedinUrl(url: string): Job | undefined {
+            return db
+                .prepare("SELECT * FROM jobs WHERE linkedin_url = ?")
+                .get(url) as Job | undefined;
         },
 
         search(query?: string): Job[] {
@@ -64,7 +70,7 @@ export function makeJobRepository(db: Database) {
 
 let _repo: JobRepository | null = null;
 
-export async function getJobRepository(): Promise<JobRepository> {
-    if (!_repo) _repo = makeJobRepository(await getDb());
+export function getJobRepository(): JobRepository {
+    if (!_repo) _repo = makeJobRepository(getDb());
     return _repo;
 }

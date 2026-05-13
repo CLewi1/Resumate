@@ -8,12 +8,14 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     })
         .then(async (res) => {
             const data = await res.json();
-            sendResponse({ ok: true, data });
+            if (res.ok && data.url) {
+                chrome.tabs.create({ url: `http://localhost:3000${data.url}` });
+            }
+            sendResponse({ ok: res.ok, data });
         })
         .catch(() => {
             sendResponse({ ok: false });
         });
 
-    // Return true to keep the message channel open for the async response
     return true;
 });
