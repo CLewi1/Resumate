@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Resumate",
+  "version": "0.1.0",
+  "description": "Capture LinkedIn job listings and send them to your local Resumate app.",
+  "permissions": ["scripting"],
+  "host_permissions": [
+    "http://localhost:3000/*",
+    "https://www.linkedin.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://www.linkedin.com/jobs/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Resumate"
+  }
+}
