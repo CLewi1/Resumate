@@ -1,26 +1,7 @@
-import { createClient } from "@/lib/supabase/server";
-
-type Todo = {
-    id: number;
-    name: string;
-};
-
-export default async function ResumesPage() {
-    const supabase = await createClient();
-
-    const { data: todos } = await supabase
-        .from("todos")
-        .select("id, name")
-        .returns<Todo[]>();
-
+export default function ResumesPage() {
     return (
-        <div>
-            Resumes Page
-            <ul>
-                {todos?.map((todo) => (
-                    <li key={todo.id}>{todo.name}</li>
-                ))}
-            </ul>
+        <div className="p-4 text-sm font-mono text-slate-500">
+            Resumes — coming soon.
         </div>
     );
 }

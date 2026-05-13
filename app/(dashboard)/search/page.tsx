@@ -1,23 +1,10 @@
 import SearchClient, { type SearchJob } from "./SearchClient";
-import { createClient } from "@/lib/supabase/server";
+import { getJobRepository, type Job } from "@/lib/db/jobs";
 
 type SearchPageProps = {
     searchParams?: Promise<{
         q?: string | string[];
     }>;
-};
-
-type JobRow = {
-    id: number;
-    title: string | null;
-    company: string | null;
-    location: string | null;
-    salary: string | null;
-    posted_at: string | null;
-    description: string | null;
-    apply_url: string | null;
-    linkedin_url: string | null;
-    raw: Record<string, unknown> | null;
 };
 
 const LOGO_CLASSES = [
@@ -35,80 +22,41 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     const query =
         typeof q === "string" ? q : Array.isArray(q) ? (q[0] ?? "") : "";
     const trimmedQuery = query.trim();
-    const supabase = await createClient();
 
-    let request = supabase
-        .from("jobs")
-        .select(
-            "id, title, company, location, salary, posted_at, description, apply_url, linkedin_url, raw",
-        );
+    let jobs: SearchJob[] = [];
+    let errorMessage: string | undefined;
 
-    if (trimmedQuery) {
-        const cleanedQuery = trimmedQuery.replace(/,+/g, " ").trim();
-        const pattern = `%${cleanedQuery}%`;
-        request = request.or(
-            `title.ilike.${pattern},company.ilike.${pattern},location.ilike.${pattern},description.ilike.${pattern},salary.ilike.${pattern}`,
-        );
+    try {
+        const rows = (await getJobRepository()).search(trimmedQuery || undefined);
+        jobs = rows.map((row, index) => mapJobRow(row, index));
+    } catch {
+        errorMessage = "Unable to load jobs right now.";
     }
-
-    const { data, error } = await request
-        .order("posted_at", { ascending: false })
-        .limit(200);
-
-    const jobs = (data ?? []).map((row, index) => mapJobRow(row, index));
 
     return (
         <SearchClient
             jobs={jobs}
             query={trimmedQuery}
-            errorMessage={error ? "Unable to load jobs right now." : undefined}
+            errorMessage={errorMessage}
         />
     );
 }
 
-function mapJobRow(row: JobRow, index: number): SearchJob {
-    const raw = row.raw ?? {};
-    const role =
-        row.title ?? getString(raw.title) ?? getString(raw.role) ?? "Untitled";
-    const company =
-        row.company ??
-        getString(raw.company) ??
-        getString(raw.employer) ??
-        "Unknown";
-    const postedAt =
-        row.posted_at ?? getString(raw.posted_at) ?? getString(raw.postedAt);
-
+function mapJobRow(row: Job, index: number): SearchJob {
     return {
         id: row.id,
-        role,
-        company,
-        logoText: getLogoText(company, role),
+        role: row.title,
+        company: row.company,
+        logoText: getLogoText(row.company, row.title),
         logoClass: LOGO_CLASSES[index % LOGO_CLASSES.length],
-        location:
-            row.location ??
-            getString(raw.location) ??
-            getString(raw.city) ??
-            "Unknown",
-        type: getJobType(raw),
-        salary:
-            row.salary ??
-            getString(raw.salary) ??
-            getString(raw.pay) ??
-            "Not listed",
-        posted: formatRelativeTime(postedAt),
-        tags: getTags(raw),
-        description:
-            row.description ??
-            getString(raw.description) ??
-            "No description provided.",
-        bullets: getBullets(raw),
-        applyUrl:
-            row.apply_url ??
-            row.linkedin_url ??
-            getString(raw.apply_url) ??
-            getString(raw.applyUrl) ??
-            getString(raw.linkedin_url) ??
-            getString(raw.linkedinUrl),
+        location: "Unknown",
+        type: "Unknown",
+        salary: "Not listed",
+        posted: formatRelativeTime(row.captured_at),
+        tags: [],
+        description: row.description,
+        bullets: [],
+        applyUrl: row.linkedin_url,
     };
 }
 
@@ -116,62 +64,6 @@ function getLogoText(company: string, role: string) {
     const base = company?.trim() || role?.trim() || "?";
     const [first] = Array.from(base);
     return first ? first.toUpperCase() : "?";
-}
-
-function getString(value: unknown): string | null {
-    if (typeof value !== "string") {
-        return null;
-    }
-
-    const trimmed = value.trim();
-    return trimmed ? trimmed : null;
-}
-
-function getStringArray(value: unknown): string[] {
-    if (!Array.isArray(value)) {
-        return [];
-    }
-
-    return value
-        .map((item) => (typeof item === "string" ? item.trim() : ""))
-        .filter((item) => item.length > 0);
-}
-
-function getJobType(raw: Record<string, unknown>): string {
-    return (
-        getString(raw.type) ??
-        getString(raw.job_type) ??
-        getString(raw.jobType) ??
-        getString(raw.employment_type) ??
-        getString(raw.employmentType) ??
-        "Unknown"
-    );
-}
-
-function getTags(raw: Record<string, unknown>): string[] {
-    const candidates = [
-        getStringArray(raw.tags),
-        getStringArray(raw.skills),
-        getStringArray(raw.tech_stack),
-        getStringArray(raw.techStack),
-        getStringArray(raw.keywords),
-    ];
-
-    return candidates.find((items) => items.length > 0) ?? [];
-}
-
-function getBullets(raw: Record<string, unknown>): string[] {
-    const candidates = [
-        getStringArray(raw.bullets),
-        getStringArray(raw.responsibilities),
-        getStringArray(raw.requirements),
-        getStringArray(raw.qualifications),
-        getStringArray(raw.highlights),
-        getStringArray(raw.key_points),
-        getStringArray(raw.keyPoints),
-    ];
-
-    return candidates.find((items) => items.length > 0) ?? [];
 }
 
 function formatRelativeTime(value: string | null): string {
