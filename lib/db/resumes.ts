@@ -1,4 +1,4 @@
-import type Database from "better-sqlite3";
+import type { SqliteDb } from "./interface";
 import { getDb } from "./index";
 
 export type Resume = {
@@ -19,7 +19,7 @@ export type NewResume = {
 
 export type ResumeRepository = ReturnType<typeof makeResumeRepository>;
 
-export function makeResumeRepository(db: Database.Database) {
+export function makeResumeRepository(db: SqliteDb) {
     return {
         save(resume: NewResume): Resume {
             return db
@@ -29,10 +29,10 @@ export function makeResumeRepository(db: Database.Database) {
                      RETURNING *`,
                 )
                 .get({
-                    name: resume.name,
-                    latex: resume.latex,
-                    job_id: resume.job_id ?? null,
-                    is_master: resume.is_master ? 1 : 0,
+                    $name: resume.name,
+                    $latex: resume.latex,
+                    $job_id: resume.job_id ?? null,
+                    $is_master: resume.is_master ? 1 : 0,
                 }) as Resume;
         },
 
@@ -41,25 +41,25 @@ export function makeResumeRepository(db: Database.Database) {
             changes: Pick<Partial<NewResume>, "name" | "latex" | "job_id">,
         ): Resume | undefined {
             const sets: string[] = [];
-            const params: Record<string, unknown> = { id };
+            const params: Record<string, string | number | null> = { $id: id };
 
             if (changes.name !== undefined) {
                 sets.push("name = $name");
-                params.name = changes.name;
+                params.$name = changes.name;
             }
             if (changes.latex !== undefined) {
                 sets.push("latex = $latex");
-                params.latex = changes.latex;
+                params.$latex = changes.latex;
             }
             if (changes.job_id !== undefined) {
                 sets.push("job_id = $job_id");
-                params.job_id = changes.job_id ?? null;
+                params.$job_id = changes.job_id ?? null;
             }
 
             if (sets.length === 0) {
                 return db
                     .prepare("SELECT * FROM resumes WHERE id = $id")
-                    .get({ id }) as Resume | undefined;
+                    .get({ $id: id }) as Resume | undefined;
             }
 
             return db

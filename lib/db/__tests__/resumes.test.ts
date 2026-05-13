@@ -1,6 +1,6 @@
 /// <reference types="bun-types" />
 import { describe, test, expect, beforeEach } from "bun:test";
-import { openDb } from "../index";
+import { createTestDb } from "./test-utils";
 import { makeJobRepository } from "../jobs";
 import { makeResumeRepository } from "../resumes";
 
@@ -13,8 +13,8 @@ describe("ResumeRepository", () => {
     let repo: ReturnType<typeof makeResumeRepository>;
     let jobRepo: ReturnType<typeof makeJobRepository>;
 
-    beforeEach(async () => {
-        const db = await openDb(":memory:");
+    beforeEach(() => {
+        const db = createTestDb();
         repo = makeResumeRepository(db);
         jobRepo = makeJobRepository(db);
     });

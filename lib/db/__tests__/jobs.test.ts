@@ -1,6 +1,6 @@
 /// <reference types="bun-types" />
 import { describe, test, expect, beforeEach } from "bun:test";
-import { openDb } from "../index";
+import { createTestDb } from "./test-utils";
 import { makeJobRepository } from "../jobs";
 
 const seed = {
@@ -13,8 +13,8 @@ const seed = {
 describe("JobRepository", () => {
     let repo: ReturnType<typeof makeJobRepository>;
 
-    beforeEach(async () => {
-        repo = makeJobRepository(await openDb(":memory:"));
+    beforeEach(() => {
+        repo = makeJobRepository(createTestDb());
     });
 
     test("insert returns the new job", () => {
