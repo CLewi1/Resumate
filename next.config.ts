@@ -2,7 +2,7 @@ import path from "path";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-    serverExternalPackages: ["bun:sqlite"],
+    serverExternalPackages: ["better-sqlite3"],
     turbopack: {
         root: path.resolve(__dirname),
     },

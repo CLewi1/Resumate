@@ -43,6 +43,11 @@ next-env.d.ts
 # extension build artifacts
 extension/*.js
 
+# local sqlite database
+*.db
+*.db-shm
+*.db-wal
+
 # github
 .github
 

@@ -1,4 +1,4 @@
-import type { Database } from "bun:sqlite";
+import type Database from "better-sqlite3";
 import { getDb } from "./index";
 
 export type Resume = {
@@ -19,7 +19,7 @@ export type NewResume = {
 
 export type ResumeRepository = ReturnType<typeof makeResumeRepository>;
 
-export function makeResumeRepository(db: Database) {
+export function makeResumeRepository(db: Database.Database) {
     return {
         save(resume: NewResume): Resume {
             return db
@@ -29,56 +29,56 @@ export function makeResumeRepository(db: Database) {
                      RETURNING *`,
                 )
                 .get({
-                    $name: resume.name,
-                    $latex: resume.latex,
-                    $job_id: resume.job_id ?? null,
-                    $is_master: resume.is_master ? 1 : 0,
+                    name: resume.name,
+                    latex: resume.latex,
+                    job_id: resume.job_id ?? null,
+                    is_master: resume.is_master ? 1 : 0,
                 }) as Resume;
         },
 
         update(
             id: number,
             changes: Pick<Partial<NewResume>, "name" | "latex" | "job_id">,
-        ): Resume | null {
+        ): Resume | undefined {
             const sets: string[] = [];
-            const params: Record<string, unknown> = { $id: id };
+            const params: Record<string, unknown> = { id };
 
             if (changes.name !== undefined) {
                 sets.push("name = $name");
-                params.$name = changes.name;
+                params.name = changes.name;
             }
             if (changes.latex !== undefined) {
                 sets.push("latex = $latex");
-                params.$latex = changes.latex;
+                params.latex = changes.latex;
             }
             if (changes.job_id !== undefined) {
                 sets.push("job_id = $job_id");
-                params.$job_id = changes.job_id ?? null;
+                params.job_id = changes.job_id ?? null;
             }
 
             if (sets.length === 0) {
                 return db
                     .prepare("SELECT * FROM resumes WHERE id = $id")
-                    .get({ $id: id }) as Resume | null;
+                    .get({ id }) as Resume | undefined;
             }
 
             return db
                 .prepare(
                     `UPDATE resumes SET ${sets.join(", ")} WHERE id = $id RETURNING *`,
                 )
-                .get(params) as Resume | null;
+                .get(params) as Resume | undefined;
         },
 
-        getById(id: number): Resume | null {
+        getById(id: number): Resume | undefined {
             return db
                 .prepare("SELECT * FROM resumes WHERE id = ?")
-                .get(id) as Resume | null;
+                .get(id) as Resume | undefined;
         },
 
-        getMaster(): Resume | null {
+        getMaster(): Resume | undefined {
             return db
                 .prepare("SELECT * FROM resumes WHERE is_master = 1 LIMIT 1")
-                .get() as Resume | null;
+                .get() as Resume | undefined;
         },
 
         setMaster(id: number): void {
@@ -104,7 +104,7 @@ export function makeResumeRepository(db: Database) {
 
 let _repo: ResumeRepository | null = null;
 
-export async function getResumeRepository(): Promise<ResumeRepository> {
-    if (!_repo) _repo = makeResumeRepository(await getDb());
+export function getResumeRepository(): ResumeRepository {
+    if (!_repo) _repo = makeResumeRepository(getDb());
     return _repo;
 }

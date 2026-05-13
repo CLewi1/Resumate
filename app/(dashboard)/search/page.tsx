@@ -27,7 +27,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     let errorMessage: string | undefined;
 
     try {
-        const rows = (await getJobRepository()).search(trimmedQuery || undefined);
+        const rows = getJobRepository().search(trimmedQuery || undefined);
         jobs = rows.map((row, index) => mapJobRow(row, index));
     } catch {
         errorMessage = "Unable to load jobs right now.";

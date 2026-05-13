@@ -1,27 +1,24 @@
-import type { Database } from "bun:sqlite";
+import Database from "better-sqlite3";
 import path from "path";
 
 const DB_PATH = path.join(process.cwd(), "jobs.db");
 
-let _db: Database | null = null;
+let _db: Database.Database | null = null;
 
-export async function openDb(filepath: string): Promise<Database> {
-    const { Database: Db } = await import("bun:sqlite");
-    const db = new Db(filepath, { create: true });
-    db.exec("PRAGMA journal_mode=WAL");
-    db.exec("PRAGMA foreign_keys=ON");
+export function openDb(filepath: string): Database.Database {
+    const db = new Database(filepath);
+    db.pragma("journal_mode = WAL");
+    db.pragma("foreign_keys = ON");
     migrate(db);
     return db;
 }
 
-export async function getDb(): Promise<Database> {
-    if (!_db) {
-        _db = await openDb(DB_PATH);
-    }
+export function getDb(): Database.Database {
+    if (!_db) _db = openDb(DB_PATH);
     return _db;
 }
 
-function migrate(db: Database): void {
+function migrate(db: Database.Database): void {
     db.exec(`
         CREATE TABLE IF NOT EXISTS jobs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

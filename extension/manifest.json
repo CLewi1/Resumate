@@ -3,7 +3,7 @@
   "name": "Resumate",
   "version": "0.1.0",
   "description": "Capture LinkedIn job listings and send them to your local Resumate app.",
-  "permissions": ["scripting"],
+  "permissions": ["scripting", "tabs"],
   "host_permissions": [
     "http://localhost:3000/*",
     "https://www.linkedin.com/*"
