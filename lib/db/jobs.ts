@@ -1,4 +1,4 @@
-import type Database from "better-sqlite3";
+import type { SqliteDb } from "./interface";
 import { getDb } from "./index";
 
 export type Job = {
@@ -19,7 +19,7 @@ export type NewJob = {
 
 export type JobRepository = ReturnType<typeof makeJobRepository>;
 
-export function makeJobRepository(db: Database.Database) {
+export function makeJobRepository(db: SqliteDb) {
     return {
         insert(job: NewJob): Job | undefined {
             return db
@@ -29,10 +29,10 @@ export function makeJobRepository(db: Database.Database) {
                      RETURNING *`,
                 )
                 .get({
-                    title: job.title,
-                    company: job.company,
-                    description: job.description,
-                    linkedin_url: job.linkedin_url,
+                    $title: job.title,
+                    $company: job.company,
+                    $description: job.description,
+                    $linkedin_url: job.linkedin_url,
                 }) as Job | undefined;
         },
 
