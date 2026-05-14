@@ -6,29 +6,27 @@ function scrapeJob(): {
     description: string;
     linkedinUrl: string;
 } | null {
-    const title =
-        document.querySelector<HTMLElement>(
-            ".job-details-jobs-unified-top-card__job-title h1, .jobs-unified-top-card__job-title h1",
-        )?.innerText.trim() ??
-        document.querySelector<HTMLElement>(
-            "[class*='job-title']",
-        )?.innerText.trim();
+    const path = window.location.pathname;
+    const isListView =
+        path.includes("/jobs/search") || path.includes("/jobs/collections");
 
-    const company =
-        document.querySelector<HTMLElement>(
-            ".job-details-jobs-unified-top-card__company-name a, .jobs-unified-top-card__company-name a",
-        )?.innerText.trim() ??
-        document.querySelector<HTMLElement>(
-            "[class*='company-name']",
-        )?.innerText.trim();
+    const title = isListView
+        ? document
+              .querySelector<HTMLElement>('a[href*="/jobs/view/"]')
+              ?.innerText.trim()
+        : Array.from(document.querySelectorAll<HTMLElement>("p"))
+              .filter((p) => !p.closest("header"))[1]
+              ?.innerText.trim();
 
-    const description =
-        document.querySelector<HTMLElement>(
-            ".jobs-description__content, .jobs-box__html-content",
-        )?.innerText.trim() ??
-        document.querySelector<HTMLElement>(
-            "[class*='description']",
-        )?.innerText.trim();
+    const company = document
+        .querySelector<HTMLElement>('a[href*="/company/"]')
+        ?.innerText.trim();
+
+    const description = document
+        .querySelector<HTMLElement>('[data-testid="expandable-text-box"]')
+        ?.innerText.trim()
+        .replace(/[…\.]{0,3}more\s*$/i, "")
+        .trimEnd();
 
     const linkedinUrl = window.location.href.split("?")[0];
 
@@ -67,11 +65,6 @@ function setButtonState(
 function injectButton() {
     if (document.getElementById(BUTTON_ID)) return;
 
-    const container = document.querySelector<HTMLElement>(
-        ".job-details-jobs-unified-top-card__top-buttons, .jobs-unified-top-card__top-buttons, .jobs-apply-button",
-    );
-    if (!container) return;
-
     const btn = document.createElement("button");
     btn.id = BUTTON_ID;
     btn.textContent = "Send to Resumate";
@@ -95,16 +88,42 @@ function injectButton() {
             return;
         }
         setButtonState(btn, "loading");
-        chrome.runtime.sendMessage({ type: "CAPTURE_JOB", payload: job }, (res) => {
-            if (chrome.runtime.lastError || !res?.ok) {
-                setButtonState(btn, "error", "Resumate not running — run `bun dev`");
-            } else {
-                setButtonState(btn, "success");
-            }
-        });
+        chrome.runtime.sendMessage(
+            { type: "CAPTURE_JOB", payload: job },
+            (res) => {
+                if (chrome.runtime.lastError || !res?.ok) {
+                    setButtonState(
+                        btn,
+                        "error",
+                        "Resumate not running — run `bun dev`",
+                    );
+                } else {
+                    setButtonState(btn, "success");
+                }
+            },
+        );
     });
 
-    container.appendChild(btn);
+    // Try the known multi-button container first (append inside it)
+    const container = document.querySelector<HTMLElement>(
+        ".job-details-jobs-unified-top-card__top-buttons, .jobs-unified-top-card__top-buttons",
+    );
+    if (container) {
+        container.appendChild(btn);
+        return;
+    }
+
+    // Fall back to inserting directly after the Apply button (avoids overflow:hidden parent divs).
+    // Match via aria-label — more reliable than textContent with deeply nested spans.
+    const applyBtn = document.querySelector<HTMLElement>(
+        'a[aria-label*="Apply" i], button[aria-label*="Apply" i]',
+    );
+    if (applyBtn) {
+        (applyBtn.parentElement ?? applyBtn).insertAdjacentElement(
+            "afterend",
+            btn,
+        );
+    }
 }
 
 // LinkedIn is a SPA — poll for the container when navigating between jobs

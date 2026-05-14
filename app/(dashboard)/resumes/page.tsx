@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Star, X, FileText, Plus } from "lucide-react";
+import { Star, X, FileText, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TEMPLATES } from "@/lib/resume-templates";
 import type { Resume } from "@/lib/db/resumes";
@@ -30,11 +30,15 @@ export default function ResumesPage() {
     async function handleCreate() {
         if (!newName.trim()) return;
         setCreating(true);
-        const template = TEMPLATES.find((t) => t.id === newTemplate) ?? TEMPLATES[0];
+        const template =
+            TEMPLATES.find((t) => t.id === newTemplate) ?? TEMPLATES[0];
         const res = await fetch("/api/resumes", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name: newName.trim(), latex: template.latex }),
+            body: JSON.stringify({
+                name: newName.trim(),
+                latex: template.latex,
+            }),
         });
         setCreating(false);
         if (res.ok) {
@@ -48,6 +52,12 @@ export default function ResumesPage() {
         fetchResumes();
     }
 
+    async function handleDelete(id: number) {
+        if (!confirm("Delete this resume? This cannot be undone.")) return;
+        await fetch(`/api/resumes/${id}`, { method: "DELETE" });
+        fetchResumes();
+    }
+
     function openDialog() {
         setNewName("");
         setNewTemplate(TEMPLATES[0].id);
@@ -58,7 +68,10 @@ export default function ResumesPage() {
         <div className="p-6 max-w-5xl mx-auto">
             <div className="flex items-center justify-between mb-6">
                 <h1 className="text-xl font-semibold text-white">Resumes</h1>
-                <Button onClick={openDialog} className="flex items-center gap-2">
+                <Button
+                    onClick={openDialog}
+                    className="flex items-center gap-2"
+                >
                     <Plus size={16} />
                     New Resume
                 </Button>
@@ -69,7 +82,9 @@ export default function ResumesPage() {
             ) : resumes.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-24 text-center">
                     <FileText size={40} className="text-slate-600 mb-4" />
-                    <p className="text-slate-400 text-sm mb-4">No resumes yet.</p>
+                    <p className="text-slate-400 text-sm mb-4">
+                        No resumes yet.
+                    </p>
                     <Button variant="outline" onClick={openDialog}>
                         Create your first resume
                     </Button>
@@ -82,6 +97,7 @@ export default function ResumesPage() {
                             resume={resume}
                             onEdit={() => router.push(`/resumes/${resume.id}`)}
                             onSetMaster={() => handleSetMaster(resume.id)}
+                            onDelete={() => handleDelete(resume.id)}
                         />
                     ))}
                 </div>
@@ -106,10 +122,12 @@ function ResumeCard({
     resume,
     onEdit,
     onSetMaster,
+    onDelete,
 }: {
     resume: Resume;
     onEdit: () => void;
     onSetMaster: () => void;
+    onDelete: () => void;
 }) {
     const isMaster = resume.is_master === 1;
     const date = new Date(resume.created_at).toLocaleDateString("en-US", {
@@ -155,6 +173,17 @@ function ResumeCard({
                         onClick={onSetMaster}
                     >
                         Set as Master
+                    </Button>
+                )}
+                {!isMaster && (
+                    <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-slate-500 hover:text-red-400 px-2"
+                        onClick={onDelete}
+                        title="Delete resume"
+                    >
+                        <Trash2 size={14} />
                     </Button>
                 )}
             </div>
