@@ -91,13 +91,21 @@ function CodeDiff({
 }
 
 // ---------------------------------------------------------------------------
-// PdfPanel
+// PDF panels
 // ---------------------------------------------------------------------------
 
-function PdfPanel({ latex }: { latex: string }) {
+// Left panel: served directly from the server-side cache endpoint.
+function CachedPdfPanel({ src }: { src: string }) {
+    return <iframe src={src} className="h-full w-full" title="PDF preview" />;
+}
+
+// Right panel: auto-generates client-side from the modified latex.
+// Shows a stale badge if the accepted set changed since last generation.
+function AutoPdfPanel({ latex }: { latex: string }) {
     const [url, setUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState<string | null>(null);
+    const [generatedFor, setGeneratedFor] = useState<string | null>(null);
     const prevUrl = useRef<string | null>(null);
 
     useEffect(
@@ -105,14 +113,14 @@ function PdfPanel({ latex }: { latex: string }) {
         [],
     );
 
-    const generate = useCallback(async () => {
+    const generate = useCallback(async (forLatex: string) => {
         setLoading(true);
         setErr(null);
         try {
             const res = await fetch("/api/generate-pdf", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ latex }),
+                body: JSON.stringify({ latex: forLatex }),
             });
             if (!res.ok) { setErr("PDF generation failed — check TEXAPI_KEY."); return; }
             const blob = await res.blob();
@@ -120,39 +128,40 @@ function PdfPanel({ latex }: { latex: string }) {
             const next = URL.createObjectURL(blob);
             prevUrl.current = next;
             setUrl(next);
+            setGeneratedFor(forLatex);
         } catch {
             setErr("Network error.");
         } finally {
             setLoading(false);
         }
-    }, [latex]);
+    }, []);
 
-    if (!url) {
-        return (
-            <div className="flex h-full flex-col items-center justify-center gap-3">
-                {err && <p className="text-xs text-red-400">{err}</p>}
-                <Button variant="outline" size="sm" onClick={generate} disabled={loading}>
-                    {loading ? (
-                        <><RefreshCw size={13} className="mr-1.5 animate-spin" />Generating…</>
-                    ) : (
-                        "Generate PDF preview"
-                    )}
-                </Button>
-            </div>
-        );
-    }
+    // Auto-generate on mount
+    useEffect(() => { generate(latex); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    const stale = generatedFor !== null && generatedFor !== latex;
 
     return (
         <div className="relative h-full">
-            <iframe src={url} className="h-full w-full" title="PDF preview" />
-            <button
-                onClick={generate}
-                disabled={loading}
-                title="Regenerate"
-                className="absolute right-2 top-2 rounded bg-black/60 p-1.5 text-slate-400 transition-colors hover:text-white disabled:opacity-40"
-            >
-                <RefreshCw size={12} className={loading ? "animate-spin" : ""} />
-            </button>
+            {loading && (
+                <div className="absolute inset-0 z-10 flex items-center justify-center bg-slate-950/80">
+                    <RefreshCw size={20} className="animate-spin text-slate-400" />
+                </div>
+            )}
+            {url && <iframe src={url} className="h-full w-full" title="Modified PDF preview" />}
+            {!url && !loading && err && (
+                <div className="flex h-full items-center justify-center text-xs text-red-400">{err}</div>
+            )}
+            {stale && (
+                <div className="absolute bottom-3 right-3 z-10">
+                    <button
+                        onClick={() => generate(latex)}
+                        className="flex items-center gap-1.5 rounded-md border border-amber-500/40 bg-amber-950/80 px-2.5 py-1.5 text-xs font-medium text-amber-300 backdrop-blur-sm transition-colors hover:bg-amber-950"
+                    >
+                        <RefreshCw size={11} /> Changes made — regenerate
+                    </button>
+                </div>
+            )}
         </div>
     );
 }
@@ -165,10 +174,12 @@ function DiffPanel({
     title,
     latex,
     highlights,
+    cachedPdfSrc,
 }: {
     title: string;
     latex: string;
     highlights: { text: string; kind: "remove" | "add" }[];
+    cachedPdfSrc?: string;
 }) {
     const [view, setView] = useState<"code" | "pdf">("code");
 
@@ -199,12 +210,17 @@ function DiffPanel({
                     </button>
                 </div>
             </div>
-            <div className="min-h-0 flex-1 bg-slate-950">
-                {view === "code" ? (
+            <div className="relative min-h-0 flex-1 bg-slate-950">
+                <div className={`absolute inset-0 ${view === "code" ? "" : "hidden"}`}>
                     <CodeDiff latex={latex} highlights={highlights} />
-                ) : (
-                    <PdfPanel latex={latex} />
-                )}
+                </div>
+                <div className={`absolute inset-0 ${view === "pdf" ? "" : "hidden"}`}>
+                    {cachedPdfSrc ? (
+                        <CachedPdfPanel src={cachedPdfSrc} />
+                    ) : (
+                        <AutoPdfPanel latex={latex} />
+                    )}
+                </div>
             </div>
         </div>
     );
@@ -368,8 +384,17 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
 
             {/* Diff panels */}
             <div className="flex min-h-0 flex-1 gap-4">
-                <DiffPanel title="Original" latex={originalLatex} highlights={leftHighlights} />
-                <DiffPanel title="Modified" latex={modifiedLatex} highlights={rightHighlights} />
+                <DiffPanel
+                    title="Original"
+                    latex={originalLatex}
+                    highlights={leftHighlights}
+                    cachedPdfSrc={`/api/resumes/${numId}/pdf`}
+                />
+                <DiffPanel
+                    title="Modified"
+                    latex={modifiedLatex}
+                    highlights={rightHighlights}
+                />
             </div>
 
             {/* Footer */}

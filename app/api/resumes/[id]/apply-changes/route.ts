@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getResumeRepository } from "@/lib/db/resumes";
 import { isChangeArray } from "@/lib/change";
+import { invalidatePdf } from "@/lib/pdf-cache";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -37,5 +38,6 @@ export async function POST(req: NextRequest, { params }: Params) {
     if (!updated) {
         return NextResponse.json({ error: "Failed to save changes" }, { status: 500 });
     }
+    invalidatePdf(numId);
     return NextResponse.json(updated);
 }

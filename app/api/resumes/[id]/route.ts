@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getResumeRepository } from "@/lib/db/resumes";
+import { invalidatePdf } from "@/lib/pdf-cache";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -58,5 +59,6 @@ export async function PUT(req: NextRequest, { params }: Params) {
     if (!updated) {
         return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
+    invalidatePdf(numId);
     return NextResponse.json(updated);
 }
