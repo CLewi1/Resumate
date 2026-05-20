@@ -137,6 +137,14 @@ describe("POST /api/resumes/[id]/apply-changes", () => {
         expect(res.status).toBe(400);
     });
 
+    test("change with empty old field — returns 400", async () => {
+        const res = await POST(makeRequest("42", {
+            accepted: [{ section: "Skills", old: "", new: "TypeScript" }],
+        }), { params: Promise.resolve({ id: "42" }) });
+
+        expect(res.status).toBe(400);
+    });
+
     test("invalid JSON body — returns 400", async () => {
         const req = new NextRequest("http://localhost/api/resumes/42/apply-changes", {
             method: "POST",

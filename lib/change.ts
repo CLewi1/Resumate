@@ -12,6 +12,7 @@ export function isChangeArray(value: unknown): value is Change[] {
             c !== null &&
             typeof (c as Record<string, unknown>).section === "string" &&
             typeof (c as Record<string, unknown>).old === "string" &&
+            (c as Record<string, unknown>).old !== "" &&
             typeof (c as Record<string, unknown>).new === "string",
     );
 }
