@@ -58,14 +58,18 @@ function buildSegments(
 function CodeDiff({
     latex,
     highlights,
+    scrollRef,
+    onScroll,
 }: {
     latex: string;
     highlights: { text: string; kind: "remove" | "add" }[];
+    scrollRef?: React.RefObject<HTMLPreElement | null>;
+    onScroll?: (e: React.UIEvent<HTMLPreElement>) => void;
 }) {
     const segments = useMemo(() => buildSegments(latex, highlights), [latex, highlights]);
 
     return (
-        <pre className="h-full overflow-auto p-4 text-xs font-mono text-slate-300 leading-relaxed whitespace-pre-wrap break-all">
+        <pre ref={scrollRef} onScroll={onScroll} className="h-full overflow-auto p-4 text-xs font-mono text-slate-300 leading-relaxed whitespace-pre-wrap break-all">
             {segments.map((seg, i) => {
                 if (seg.kind === "remove") {
                     return (
@@ -175,11 +179,15 @@ function DiffPanel({
     latex,
     highlights,
     cachedPdfSrc,
+    codeRef,
+    onCodeScroll,
 }: {
     title: string;
     latex: string;
     highlights: { text: string; kind: "remove" | "add" }[];
     cachedPdfSrc?: string;
+    codeRef?: React.RefObject<HTMLPreElement | null>;
+    onCodeScroll?: (e: React.UIEvent<HTMLPreElement>) => void;
 }) {
     const [view, setView] = useState<"code" | "pdf">("code");
 
@@ -212,7 +220,7 @@ function DiffPanel({
             </div>
             <div className="relative min-h-0 flex-1 bg-slate-950">
                 <div className={`absolute inset-0 ${view === "code" ? "" : "hidden"}`}>
-                    <CodeDiff latex={latex} highlights={highlights} />
+                    <CodeDiff latex={latex} highlights={highlights} scrollRef={codeRef} onScroll={onCodeScroll} />
                 </div>
                 <div className={`absolute inset-0 ${view === "pdf" ? "" : "hidden"}`}>
                     {cachedPdfSrc ? (
@@ -234,6 +242,30 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
     const { id } = use(params);
     const numId = Number(id);
     const router = useRouter();
+
+    const leftScrollRef = useRef<HTMLPreElement>(null);
+    const rightScrollRef = useRef<HTMLPreElement>(null);
+    const syncing = useRef(false);
+
+    function handleLeftScroll(e: React.UIEvent<HTMLPreElement>) {
+        if (syncing.current) return;
+        syncing.current = true;
+        if (rightScrollRef.current) {
+            rightScrollRef.current.scrollTop = e.currentTarget.scrollTop;
+            rightScrollRef.current.scrollLeft = e.currentTarget.scrollLeft;
+        }
+        requestAnimationFrame(() => { syncing.current = false; });
+    }
+
+    function handleRightScroll(e: React.UIEvent<HTMLPreElement>) {
+        if (syncing.current) return;
+        syncing.current = true;
+        if (leftScrollRef.current) {
+            leftScrollRef.current.scrollTop = e.currentTarget.scrollTop;
+            leftScrollRef.current.scrollLeft = e.currentTarget.scrollLeft;
+        }
+        requestAnimationFrame(() => { syncing.current = false; });
+    }
 
     const [originalLatex, setOriginalLatex] = useState<string | null>(null);
     const [changes, setChanges] = useState<Change[] | null>(null);
@@ -389,11 +421,15 @@ export default function ReviewPage({ params }: { params: Promise<{ id: string }>
                     latex={originalLatex}
                     highlights={leftHighlights}
                     cachedPdfSrc={`/api/resumes/${numId}/pdf`}
+                    codeRef={leftScrollRef}
+                    onCodeScroll={handleLeftScroll}
                 />
                 <DiffPanel
                     title="Modified"
                     latex={modifiedLatex}
                     highlights={rightHighlights}
+                    codeRef={rightScrollRef}
+                    onCodeScroll={handleRightScroll}
                 />
             </div>
 
