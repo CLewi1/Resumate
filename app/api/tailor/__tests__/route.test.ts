@@ -2,7 +2,7 @@ import { describe, test, expect, mock, beforeEach } from "bun:test";
 import { NextRequest } from "next/server";
 import type { Job } from "@/lib/db/jobs";
 import type { Resume } from "@/lib/db/resumes";
-import type { Change } from "@/lib/tailor";
+import type { Change } from "@/lib/change";
 
 const mockGetJobById = mock((_id: number): Job | undefined => undefined);
 const mockGetMaster = mock((): Resume | undefined => undefined);

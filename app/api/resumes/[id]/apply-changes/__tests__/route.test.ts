@@ -146,4 +146,26 @@ describe("POST /api/resumes/[id]/apply-changes", () => {
 
         expect(res.status).toBe(400);
     });
+
+    test("master resume — returns 403 and does not update", async () => {
+        mockGetById.mockReturnValue({ ...BASE_RESUME, is_master: 1 });
+
+        const res = await POST(makeRequest("42", { accepted: [] }), {
+            params: Promise.resolve({ id: "42" }),
+        });
+
+        expect(res.status).toBe(403);
+        expect(mockUpdate).not.toHaveBeenCalled();
+    });
+
+    test("update returns undefined — returns 500", async () => {
+        mockGetById.mockReturnValue(BASE_RESUME);
+        mockUpdate.mockReturnValue(undefined);
+
+        const res = await POST(makeRequest("42", { accepted: [] }), {
+            params: Promise.resolve({ id: "42" }),
+        });
+
+        expect(res.status).toBe(500);
+    });
 });

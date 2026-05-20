@@ -3,7 +3,7 @@
 import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import type { Change } from "@/lib/tailor";
+import type { Change } from "@/lib/change";
 import { CheckCircle, XCircle } from "lucide-react";
 
 export default function ReviewPage({
@@ -21,18 +21,15 @@ export default function ReviewPage({
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        Promise.resolve(sessionStorage.getItem(`tailor-changes-${numId}`)).then(
-            (raw) => {
-                if (!raw) { setChanges([]); return; }
-                try {
-                    const parsed = JSON.parse(raw) as Change[];
-                    setChanges(parsed);
-                    setAccepted(new Set(parsed.map((_, i) => i)));
-                } catch {
-                    setChanges([]);
-                }
-            },
-        );
+        const raw = sessionStorage.getItem(`tailor-changes-${numId}`);
+        if (!raw) { setChanges([]); return; }
+        try {
+            const parsed = JSON.parse(raw) as Change[];
+            setChanges(parsed);
+            setAccepted(new Set(parsed.map((_, i) => i)));
+        } catch {
+            setChanges([]);
+        }
     }, [numId]);
 
     function toggle(index: number) {
@@ -92,16 +89,46 @@ export default function ReviewPage({
     }
 
     const acceptedCount = accepted.size;
+    const allAccepted = acceptedCount === changes.length;
+    const allRejected = acceptedCount === 0;
+
+    function acceptAll() {
+        if (!changes) return;
+        setAccepted(new Set(changes.map((_, i) => i)));
+    }
+
+    function rejectAll() {
+        setAccepted(new Set());
+    }
 
     return (
         <div className="max-w-3xl mx-auto py-8 space-y-6">
-            <div className="space-y-1">
-                <h1 className="text-2xl font-bold text-foreground">
-                    Review AI-proposed changes
-                </h1>
-                <p className="text-sm text-muted-foreground">
-                    {changes.length} proposed change{changes.length !== 1 ? "s" : ""}. Accept or reject each one, then confirm.
-                </p>
+            <div className="flex items-start justify-between">
+                <div className="space-y-1">
+                    <h1 className="text-2xl font-bold text-foreground">
+                        Review AI-proposed changes
+                    </h1>
+                    <p className="text-sm text-muted-foreground">
+                        {changes.length} proposed change{changes.length !== 1 ? "s" : ""}. Accept or reject each one, then confirm.
+                    </p>
+                </div>
+                <div className="flex items-center gap-2 pt-1">
+                    <button
+                        onClick={acceptAll}
+                        disabled={allAccepted}
+                        className="text-xs font-medium text-violet-400 hover:text-violet-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    >
+                        Accept all
+                    </button>
+                    <span className="text-border">·</span>
+                    <button
+                        onClick={rejectAll}
+                        disabled={allRejected}
+                        className="text-xs font-medium text-muted-foreground hover:text-red-400 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    >
+                        Reject all
+                    </button>
+                </div>
             </div>
 
             <div className="space-y-4">
@@ -177,6 +204,13 @@ export default function ReviewPage({
                     <span className="text-sm text-muted-foreground">
                         {acceptedCount} of {changes.length} accepted
                     </span>
+                    <Button
+                        variant="ghost"
+                        onClick={() => router.push(`/resumes/${numId}`)}
+                        disabled={isApplying}
+                    >
+                        Cancel
+                    </Button>
                     <Button onClick={handleConfirm} disabled={isApplying}>
                         {isApplying ? "Applying…" : "Apply accepted changes →"}
                     </Button>

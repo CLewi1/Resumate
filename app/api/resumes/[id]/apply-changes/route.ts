@@ -1,20 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getResumeRepository } from "@/lib/db/resumes";
-import type { Change } from "@/lib/tailor";
+import { isChangeArray } from "@/lib/change";
 
 type Params = { params: Promise<{ id: string }> };
-
-function isChangeArray(value: unknown): value is Change[] {
-    if (!Array.isArray(value)) return false;
-    return value.every(
-        (c) =>
-            typeof c === "object" &&
-            c !== null &&
-            typeof (c as Record<string, unknown>).section === "string" &&
-            typeof (c as Record<string, unknown>).old === "string" &&
-            typeof (c as Record<string, unknown>).new === "string",
-    );
-}
 
 export async function POST(req: NextRequest, { params }: Params) {
     const { id } = await params;
@@ -36,12 +24,18 @@ export async function POST(req: NextRequest, { params }: Params) {
     if (!resume) {
         return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
+    if (resume.is_master) {
+        return NextResponse.json({ error: "Cannot apply changes to master resume" }, { status: 403 });
+    }
 
     let latex = resume.latex;
     for (const change of body.accepted) {
-        latex = latex.replace(change.old, change.new);
+        latex = latex.replaceAll(change.old, change.new);
     }
 
     const updated = repo.update(numId, { latex });
+    if (!updated) {
+        return NextResponse.json({ error: "Failed to save changes" }, { status: 500 });
+    }
     return NextResponse.json(updated);
 }
