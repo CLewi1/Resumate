@@ -64,15 +64,21 @@ export default function ResumeEditorClient({
     const save = useCallback(
         async (newLatex: string) => {
             setSaveStatus("saving");
-            const res = await fetch(`/api/resumes/${numId}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ latex: newLatex }),
-            });
-            if (res.ok) {
-                const updated: Resume = await res.json();
-                setResume(updated);
-                setSaveStatus("saved");
+            try {
+                const res = await fetch(`/api/resumes/${numId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ latex: newLatex }),
+                });
+                if (res.ok) {
+                    const updated: Resume = await res.json();
+                    setResume(updated);
+                    setSaveStatus("saved");
+                } else {
+                    setSaveStatus("unsaved");
+                }
+            } catch {
+                setSaveStatus("unsaved");
             }
         },
         [numId],
@@ -86,8 +92,10 @@ export default function ResumeEditorClient({
     }
 
     async function handleSetMaster() {
-        await fetch(`/api/resumes/${numId}/master`, { method: "POST" });
-        setResume((prev) => prev ? { ...prev, is_master: 1 } : prev);
+        const res = await fetch(`/api/resumes/${numId}/master`, { method: "POST" });
+        if (res.ok) {
+            setResume((prev) => prev ? { ...prev, is_master: 1 } : prev);
+        }
     }
 
     useEffect(() => {

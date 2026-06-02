@@ -187,8 +187,8 @@ function AutoPdfPanel({ latex, pdfEnabled }: { latex: string; pdfEnabled: boolea
                     <RefreshCw size={20} className="animate-spin text-slate-400" />
                 </div>
             )}
-            {url && <iframe src={url} className="h-full w-full" title="PDF preview" />}
-            {!url && !loading && err && (
+            {url && !err && <iframe src={url} className="h-full w-full" title="PDF preview" />}
+            {!loading && err && (
                 <div className="flex h-full items-center justify-center text-xs text-red-400">{err}</div>
             )}
             {stale && (
