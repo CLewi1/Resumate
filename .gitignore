@@ -57,3 +57,5 @@ extension/*.js
 # claude
 .claude
 CLAUDE.md
+CONTEXT.md
+docs/
