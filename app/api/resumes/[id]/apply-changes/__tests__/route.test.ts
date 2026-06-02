@@ -14,6 +14,8 @@ mock.module("@/lib/db/resumes", () => ({
 }));
 
 mock.module("@/lib/pdf-cache", () => ({
+    getCachedPdf: mock((_id: number): null => null),
+    cachePdf: mock((_id: number, _buf: unknown): void => undefined),
     invalidatePdf: mockInvalidatePdf,
 }));
 
