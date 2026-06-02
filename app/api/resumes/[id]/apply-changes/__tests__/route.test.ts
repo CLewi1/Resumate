@@ -4,12 +4,17 @@ import type { Resume } from "@/lib/db/resumes";
 
 const mockGetById = mock((_id: number): Resume | undefined => undefined);
 const mockUpdate = mock((_id: number, _changes: unknown): Resume | undefined => undefined);
+const mockInvalidatePdf = mock((_id: number): void => undefined);
 
 mock.module("@/lib/db/resumes", () => ({
     getResumeRepository: () => ({
         getById: mockGetById,
         update: mockUpdate,
     }),
+}));
+
+mock.module("@/lib/pdf-cache", () => ({
+    invalidatePdf: mockInvalidatePdf,
 }));
 
 const { POST } = await import("../route");
@@ -35,6 +40,7 @@ describe("POST /api/resumes/[id]/apply-changes", () => {
     beforeEach(() => {
         mockGetById.mockReset();
         mockUpdate.mockReset();
+        mockInvalidatePdf.mockReset();
     });
 
     test("happy path — applies all accepted changes and returns updated resume", async () => {

@@ -35,6 +35,7 @@ export async function DELETE(_req: NextRequest, { params }: Params) {
         return NextResponse.json({ error: "Cannot delete the master resume" }, { status: 409 });
     }
     repo.delete(numId);
+    invalidatePdf(numId);
     return new NextResponse(null, { status: 204 });
 }
 
@@ -55,10 +56,16 @@ export async function PUT(req: NextRequest, { params }: Params) {
     if (typeof body.latex === "string") changes.latex = body.latex;
 
     const repo = getResumeRepository();
-    const updated = repo.update(numId, changes);
-    if (!updated) {
+    const existing = repo.getById(numId);
+    if (!existing) {
         return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
-    invalidatePdf(numId);
+    const updated = repo.update(numId, changes);
+    if (!updated) {
+        return NextResponse.json({ error: "Not found" }, { status: 500 });
+    }
+    if (changes.latex !== undefined && changes.latex !== existing.latex) {
+        invalidatePdf(numId);
+    }
     return NextResponse.json(updated);
 }
