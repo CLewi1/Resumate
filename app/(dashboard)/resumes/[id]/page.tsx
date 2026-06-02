@@ -22,8 +22,7 @@ export default function ResumeEditor({
     const [resume, setResume] = useState<Resume | null>(null);
     const [latex, setLatex] = useState("");
     const [loadError, setLoadError] = useState(false);
-    const [isGenerating, setIsGenerating] = useState(false);
-    const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+    const [pdfVersion, setPdfVersion] = useState(0);
     const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "unsaved">("saved");
 
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -66,28 +65,6 @@ export default function ResumeEditor({
         await fetch(`/api/resumes/${numId}/master`, { method: "POST" });
         setResume((prev) => prev ? { ...prev, is_master: 1 } : prev);
     }
-
-    async function handleGeneratePdf() {
-        setIsGenerating(true);
-        const res = await fetch("/api/generate-pdf", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ latex }),
-        });
-        setIsGenerating(false);
-        if (res.ok) {
-            const buffer = await res.arrayBuffer();
-            const blob = new Blob([buffer], { type: "application/pdf" });
-            if (pdfUrl) URL.revokeObjectURL(pdfUrl);
-            setPdfUrl(URL.createObjectURL(blob));
-        }
-    }
-
-    useEffect(() => {
-        return () => {
-            if (pdfUrl) URL.revokeObjectURL(pdfUrl);
-        };
-    }, [pdfUrl]);
 
     useEffect(() => {
         return () => {
@@ -151,10 +128,9 @@ export default function ResumeEditor({
                                 )}
                                 <Button
                                     size="sm"
-                                    onClick={handleGeneratePdf}
-                                    disabled={isGenerating}
+                                    onClick={() => setPdfVersion((v) => v + 1)}
                                 >
-                                    {isGenerating ? "Generating…" : "Preview PDF"}
+                                    Refresh PDF
                                 </Button>
                             </div>
                         </div>
@@ -171,17 +147,12 @@ export default function ResumeEditor({
                 <ResizableHandle withHandle />
 
                 <ResizablePanel defaultSize={50}>
-                    {pdfUrl ? (
-                        <embed
-                            src={pdfUrl}
-                            type="application/pdf"
-                            className="w-full h-full"
-                        />
-                    ) : (
-                        <div className="flex items-center justify-center h-full text-sm text-slate-500">
-                            PDF preview will appear here
-                        </div>
-                    )}
+                    <iframe
+                        key={pdfVersion}
+                        src={`/api/resumes/${numId}/pdf`}
+                        className="w-full h-full"
+                        title="PDF preview"
+                    />
                 </ResizablePanel>
             </ResizablePanelGroup>
         </div>

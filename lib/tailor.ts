@@ -2,11 +2,9 @@ import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-export type Change = {
-    section: string;
-    old: string;
-    new: string;
-};
+import { type Change, isChangeArray } from "@/lib/change";
+export type { Change } from "@/lib/change";
+export { isChangeArray } from "@/lib/change";
 
 // A ModelCaller abstracts away the provider: takes system + user text, returns model output.
 export type ModelCaller = (system: string, user: string) => Promise<string>;
@@ -25,18 +23,6 @@ Return ONLY the JSON array with no explanation, markdown, or code fences.`;
 
 function buildUserMessage(latex: string, jobDescription: string): string {
     return `MASTER RESUME (LaTeX):\n${latex}\n\nJOB DESCRIPTION:\n${jobDescription}`;
-}
-
-function isChangeArray(value: unknown): value is Change[] {
-    if (!Array.isArray(value)) return false;
-    return value.every(
-        (item) =>
-            typeof item === "object" &&
-            item !== null &&
-            typeof (item as Record<string, unknown>).section === "string" &&
-            typeof (item as Record<string, unknown>).old === "string" &&
-            typeof (item as Record<string, unknown>).new === "string",
-    );
 }
 
 // --- Provider implementations ---

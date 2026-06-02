@@ -43,7 +43,11 @@ export function TailorButton({
                 setState({ status: "error", message: data.error ?? "Something went wrong." });
                 return;
             }
-            router.push(`/resumes/${data.resumeId}`);
+            sessionStorage.setItem(
+                `tailor-changes-${data.resumeId}`,
+                JSON.stringify(data.changes),
+            );
+            router.push(`/resumes/${data.resumeId}/review`);
         } catch {
             setState({ status: "error", message: "Network error — is the app running?" });
         }

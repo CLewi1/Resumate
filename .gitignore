@@ -48,6 +48,9 @@ extension/*.js
 *.db-shm
 *.db-wal
 
+# generated pdf cache
+/resumes
+
 # github
 .github
 
