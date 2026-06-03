@@ -141,7 +141,7 @@ function ResumeCard({
         <div
             className={`rounded-xl border p-4 flex flex-col gap-3 transition-colors ${
                 isMaster
-                    ? "border-violet-500/50 bg-violet-950/20"
+                    ? "border-orange-500/50 bg-orange-950/20"
                     : "border-zinc-700 bg-zinc-900"
             }`}
         >
@@ -150,7 +150,7 @@ function ResumeCard({
                     {resume.name}
                 </span>
                 {isMaster && (
-                    <span className="flex items-center gap-1 text-xs text-violet-400 bg-violet-500/10 border border-violet-500/30 rounded-full px-2 py-0.5 shrink-0">
+                    <span className="flex items-center gap-1 text-xs text-orange-400 bg-orange-500/10 border border-orange-500/30 rounded-full px-2 py-0.5 shrink-0">
                         <Star size={10} fill="currentColor" />
                         Master
                     </span>
@@ -170,7 +170,7 @@ function ResumeCard({
                     <Button
                         size="sm"
                         variant="ghost"
-                        className="flex-1 text-xs text-slate-400 hover:text-violet-400"
+                        className="flex-1 text-xs text-slate-400 hover:text-orange-400"
                         onClick={onSetMaster}
                     >
                         Set as Master
@@ -239,7 +239,7 @@ function NewResumeDialog({
                             onChange={(e) => onNameChange(e.target.value)}
                             onKeyDown={(e) => e.key === "Enter" && onCreate()}
                             placeholder="e.g. Software Engineer Resume"
-                            className="w-full bg-zinc-800 border border-zinc-600 rounded-lg px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-violet-500"
+                            className="w-full bg-zinc-800 border border-zinc-600 rounded-lg px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-orange-500"
                         />
                     </div>
 
@@ -250,7 +250,7 @@ function NewResumeDialog({
                         <select
                             value={template}
                             onChange={(e) => onTemplateChange(e.target.value)}
-                            className="w-full bg-zinc-800 border border-zinc-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-violet-500"
+                            className="w-full bg-zinc-800 border border-zinc-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-orange-500"
                         >
                             {TEMPLATES.map((t) => (
                                 <option key={t.id} value={t.id}>

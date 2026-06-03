@@ -44,12 +44,12 @@ export function DashboardSidebar({ userEmail }: { userEmail?: string }) {
         <aside className="hidden md:flex flex-col w-64 bg-[#0b1120] border-r border-slate-800/60 font-mono text-slate-300 h-screen sticky top-0 shrink-0">
             <div className="p-6 pt-8">
                 <div className="font-bold text-xl tracking-tight text-white mb-1 flex items-center gap-2">
-                    <span className="text-emerald-400">{">_"}</span>
+                    <span className="text-orange-400">{">_"}</span>
                     <span>
-                        Resume<span className="text-emerald-400">AI</span>
+                        Resume<span className="text-orange-400">AI</span>
                     </span>
                 </div>
-                <div className="text-emerald-500/70 text-xs tracking-wide">
+                <div className="text-orange-500/70 text-xs tracking-wide">
                     // for developers
                 </div>
             </div>
@@ -67,18 +67,18 @@ export function DashboardSidebar({ userEmail }: { userEmail?: string }) {
                             href={link.path}
                             className={`relative flex items-center gap-3 px-6 py-3 text-sm font-medium transition-all group ${
                                 isActive
-                                    ? "bg-emerald-900/20 text-emerald-400"
+                                    ? "bg-orange-900/20 text-orange-400"
                                     : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/30"
                             }`}
                         >
                             {isActive && (
-                                <div className="absolute left-0 top-0 bottom-0 w-1 bg-emerald-500" />
+                                <div className="absolute left-0 top-0 bottom-0 w-1 bg-orange-500" />
                             )}
                             <Icon
                                 size={18}
                                 className={
                                     isActive
-                                        ? "text-emerald-400"
+                                        ? "text-orange-400"
                                         : "text-slate-500 group-hover:text-slate-300"
                                 }
                             />
@@ -132,7 +132,7 @@ export function DashboardSidebar({ userEmail }: { userEmail?: string }) {
                         {[...Array(15)].map((_, i) => (
                             <div
                                 key={`d1-${i}`}
-                                className="w-1 h-1 rounded-full bg-emerald-500/30"
+                                className="w-1 h-1 rounded-full bg-orange-500/30"
                             />
                         ))}
                     </div>
@@ -140,7 +140,7 @@ export function DashboardSidebar({ userEmail }: { userEmail?: string }) {
                         {[...Array(15)].map((_, i) => (
                             <div
                                 key={`d2-${i}`}
-                                className="w-1 h-1 rounded-full bg-emerald-500/30"
+                                className="w-1 h-1 rounded-full bg-orange-500/30"
                             />
                         ))}
                     </div>

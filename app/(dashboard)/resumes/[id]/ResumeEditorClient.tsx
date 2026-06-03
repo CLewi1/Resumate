@@ -134,7 +134,7 @@ export default function ResumeEditorClient({
                                     {resume.name}
                                 </span>
                                 {isMaster && (
-                                    <span className="flex items-center gap-1 text-xs text-violet-400 bg-violet-500/10 border border-violet-500/30 rounded-full px-2 py-0.5 shrink-0">
+                                    <span className="flex items-center gap-1 text-xs text-orange-400 bg-orange-500/10 border border-orange-500/30 rounded-full px-2 py-0.5 shrink-0">
                                         <Star size={10} fill="currentColor" />
                                         Master
                                     </span>
@@ -152,7 +152,7 @@ export default function ResumeEditorClient({
                                     <Button
                                         size="sm"
                                         variant="ghost"
-                                        className="text-xs text-slate-400 hover:text-violet-400"
+                                        className="text-xs text-slate-400 hover:text-orange-400"
                                         onClick={handleSetMaster}
                                     >
                                         Set as Master

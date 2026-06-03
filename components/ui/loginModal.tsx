@@ -26,7 +26,7 @@ export default function LoginModal({
             {/* Modal Content */}
             <div className="relative bg-white border border-slate-200 w-full max-w-md rounded-2xl p-8 shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
                 {/* Decorative gradient blob */}
-                <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
                 <button
                     onClick={onClose}
@@ -36,7 +36,7 @@ export default function LoginModal({
                 </button>
 
                 <div className="text-center mb-8 relative z-10">
-                    <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center mx-auto mb-4 border border-emerald-100 text-emerald-600">
+                    <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center mx-auto mb-4 border border-orange-100 text-orange-600">
                         <User size={24} />
                     </div>
                     <h2 className="text-2xl font-bold text-slate-900 mb-2">
@@ -71,11 +71,11 @@ export default function LoginModal({
 
                 <div className="mt-8 text-center text-xs text-slate-500">
                     By continuing, you agree to our{" "}
-                    <span className="underline cursor-pointer hover:text-emerald-700">
+                    <span className="underline cursor-pointer hover:text-orange-700">
                         Terms
                     </span>{" "}
                     and{" "}
-                    <span className="underline cursor-pointer hover:text-emerald-700">
+                    <span className="underline cursor-pointer hover:text-orange-700">
                         Privacy Policy
                     </span>
                     .

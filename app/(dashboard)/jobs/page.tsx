@@ -9,10 +9,10 @@ type JobsPageProps = {
 
 const LOGO_CLASSES = [
     "bg-black text-white",
-    "bg-violet-600 text-white",
+    "bg-orange-600 text-white",
     "bg-green-600 text-white",
     "bg-blue-600 text-white",
-    "bg-emerald-600 text-white",
+    "bg-orange-600 text-white",
     "bg-slate-900 text-white",
 ];
 

@@ -37,7 +37,7 @@ export function JobCard({
             <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-3">
                     <div
-                        className={`bg-linear-to-br from-violet-50 to-purple-100 dark:from-violet-950/50 dark:to-purple-900/50 border border-violet-200 dark:border-violet-900/50 rounded-xl flex items-center justify-center ${compact ? "w-10 h-10 text-lg" : "w-12 h-12 text-2xl"}`}
+                        className={`bg-linear-to-br from-orange-50 to-orange-100 dark:from-orange-950/50 dark:to-orange-900/50 border border-orange-200 dark:border-orange-900/50 rounded-xl flex items-center justify-center ${compact ? "w-10 h-10 text-lg" : "w-12 h-12 text-2xl"}`}
                     >
                         {job.logo}
                     </div>
@@ -60,10 +60,10 @@ export function JobCard({
                     aria-label={
                         isBookmarked ? "Remove bookmark" : "Add bookmark"
                     }
-                    className="p-1.5 text-gray-400 hover:text-violet-500 dark:text-gray-500 dark:hover:text-violet-400 transition-colors rounded-lg hover:bg-violet-50 dark:hover:bg-violet-900/20"
+                    className="p-1.5 text-gray-400 hover:text-orange-500 dark:text-gray-500 dark:hover:text-orange-400 transition-colors rounded-lg hover:bg-orange-50 dark:hover:bg-orange-900/20"
                 >
                     <Bookmark
-                        className={`w-4 h-4 ${isBookmarked ? "fill-current text-violet-500 dark:text-violet-400" : ""}`}
+                        className={`w-4 h-4 ${isBookmarked ? "fill-current text-orange-500 dark:text-orange-400" : ""}`}
                     />
                 </button>
             </div>
@@ -94,7 +94,7 @@ export function JobCard({
                 {job.tags.map((t: string, i: number) => (
                     <span
                         key={i}
-                        className="px-2 py-0.5 bg-violet-50 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 rounded-full text-xs font-medium border border-violet-100 dark:border-violet-800/50"
+                        className="px-2 py-0.5 bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 rounded-full text-xs font-medium border border-orange-100 dark:border-orange-800/50"
                     >
                         {t}
                     </span>
@@ -119,7 +119,7 @@ export function JobCard({
                 <button
                     type="button"
                     onClick={() => onApply?.(job)}
-                    className="px-3 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 text-xs font-medium transition-colors"
+                    className="px-3 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 text-xs font-medium transition-colors"
                 >
                     Apply
                 </button>

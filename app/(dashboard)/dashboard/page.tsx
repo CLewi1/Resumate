@@ -41,12 +41,12 @@ export default function Dashboard() {
                                     <div className="text-2xl font-bold leading-none font-sans mt-2">
                                         18
                                     </div>
-                                    <div className="text-emerald-600 text-[10px] flex items-center gap-1.5 font-sans font-medium mt-2">
-                                        <span className="w-1 h-1 rounded-full bg-emerald-500"></span>{" "}
+                                    <div className="text-orange-600 text-[10px] flex items-center gap-1.5 font-sans font-medium mt-2">
+                                        <span className="w-1 h-1 rounded-full bg-orange-500"></span>{" "}
                                         4 this week
                                     </div>
                                 </div>
-                                <div className="w-11 h-11 rounded-lg bg-emerald-50/80 flex items-center justify-center text-emerald-600">
+                                <div className="w-11 h-11 rounded-lg bg-orange-50/80 flex items-center justify-center text-orange-600">
                                     <Send size={20} />
                                 </div>
                             </div>
@@ -61,12 +61,12 @@ export default function Dashboard() {
                                     <div className="text-2xl font-bold leading-none font-sans mt-2">
                                         3
                                     </div>
-                                    <div className="text-emerald-600 text-[10px] flex items-center gap-1.5 font-sans font-medium mt-2">
-                                        <span className="w-1 h-1 rounded-full bg-emerald-500"></span>{" "}
+                                    <div className="text-orange-600 text-[10px] flex items-center gap-1.5 font-sans font-medium mt-2">
+                                        <span className="w-1 h-1 rounded-full bg-orange-500"></span>{" "}
                                         1 upcoming
                                     </div>
                                 </div>
-                                <div className="w-11 h-11 rounded-lg bg-emerald-50/80 flex items-center justify-center text-emerald-600">
+                                <div className="w-11 h-11 rounded-lg bg-orange-50/80 flex items-center justify-center text-orange-600">
                                     <Calendar size={20} />
                                 </div>
                             </div>
@@ -81,12 +81,12 @@ export default function Dashboard() {
                                     <div className="text-2xl font-bold leading-none font-sans mt-2">
                                         12
                                     </div>
-                                    <div className="text-emerald-600 text-[10px] flex items-center gap-1.5 font-sans font-medium mt-2">
-                                        <span className="w-1 h-1 rounded-full bg-emerald-500"></span>{" "}
+                                    <div className="text-orange-600 text-[10px] flex items-center gap-1.5 font-sans font-medium mt-2">
+                                        <span className="w-1 h-1 rounded-full bg-orange-500"></span>{" "}
                                         8 this week
                                     </div>
                                 </div>
-                                <div className="w-11 h-11 rounded-lg bg-emerald-50/80 flex items-center justify-center text-emerald-600">
+                                <div className="w-11 h-11 rounded-lg bg-orange-50/80 flex items-center justify-center text-orange-600">
                                     <FileText size={20} />
                                 </div>
                             </div>
@@ -101,12 +101,12 @@ export default function Dashboard() {
                                     <div className="text-2xl font-bold leading-none font-sans mt-2">
                                         92%
                                     </div>
-                                    <div className="text-emerald-600 text-[10px] flex items-center gap-1.5 font-sans font-medium mt-2">
-                                        <span className="w-1 h-1 rounded-full bg-emerald-500"></span>{" "}
+                                    <div className="text-orange-600 text-[10px] flex items-center gap-1.5 font-sans font-medium mt-2">
+                                        <span className="w-1 h-1 rounded-full bg-orange-500"></span>{" "}
                                         +12% vs last week
                                     </div>
                                 </div>
-                                <div className="w-11 h-11 rounded-lg bg-emerald-50/80 flex items-center justify-center text-emerald-600">
+                                <div className="w-11 h-11 rounded-lg bg-orange-50/80 flex items-center justify-center text-orange-600">
                                     <TrendingUp size={20} />
                                 </div>
                             </div>
@@ -121,14 +121,14 @@ export default function Dashboard() {
                             <h2 className="font-bold flex items-center text-xs font-mono text-slate-800">
                                 Recent Activity
                             </h2>
-                            <button className="text-emerald-600 text-[10px] font-mono font-medium flex items-center gap-1 hover:text-emerald-700 transition-colors">
+                            <button className="text-orange-600 text-[10px] font-mono font-medium flex items-center gap-1 hover:text-orange-700 transition-colors">
                                 View all <span>→</span>
                             </button>
                         </div>
 
                         <div className="space-y-0 divide-y divide-slate-100 flex-1">
                             <div className="flex items-center gap-4 py-2.5 group">
-                                <div className="w-8 h-8 rounded-full border-2 border-emerald-500/20 bg-emerald-50 flex items-center justify-center text-emerald-600 shrink-0 group-hover:border-emerald-500/40 transition-colors">
+                                <div className="w-8 h-8 rounded-full border-2 border-orange-500/20 bg-orange-50 flex items-center justify-center text-orange-600 shrink-0 group-hover:border-orange-500/40 transition-colors">
                                     <CheckCircle2 size={14} />
                                 </div>
                                 <div className="flex-1 min-w-0">
@@ -143,13 +143,13 @@ export default function Dashboard() {
                                         2 hours ago
                                     </div>
                                 </div>
-                                <div className="bg-emerald-50/80 px-2 py-0.5 rounded text-[10px] font-bold text-emerald-600 font-mono border border-emerald-100/50">
+                                <div className="bg-orange-50/80 px-2 py-0.5 rounded text-[10px] font-bold text-orange-600 font-mono border border-orange-100/50">
                                     Applied
                                 </div>
                             </div>
 
                             <div className="flex items-center gap-4 py-2.5 group">
-                                <div className="w-8 h-8 rounded-full border-2 border-emerald-500/20 bg-slate-50 flex items-center justify-center text-slate-500 shrink-0 group-hover:border-emerald-500/40 transition-colors">
+                                <div className="w-8 h-8 rounded-full border-2 border-orange-500/20 bg-slate-50 flex items-center justify-center text-slate-500 shrink-0 group-hover:border-orange-500/40 transition-colors">
                                     <Bookmark size={14} />
                                 </div>
                                 <div className="flex-1 min-w-0">
@@ -170,7 +170,7 @@ export default function Dashboard() {
                             </div>
 
                             <div className="flex items-center gap-4 py-2.5 group">
-                                <div className="w-8 h-8 rounded-full border-2 border-emerald-500/20 bg-emerald-50 flex items-center justify-center text-emerald-600 shrink-0 group-hover:border-emerald-500/40 transition-colors">
+                                <div className="w-8 h-8 rounded-full border-2 border-orange-500/20 bg-orange-50 flex items-center justify-center text-orange-600 shrink-0 group-hover:border-orange-500/40 transition-colors">
                                     <CodeXml size={14} />
                                 </div>
                                 <div className="flex-1 min-w-0">
@@ -185,13 +185,13 @@ export default function Dashboard() {
                                         1 day ago
                                     </div>
                                 </div>
-                                <div className="bg-emerald-50/80 px-2 py-0.5 rounded text-[10px] font-bold text-emerald-600 font-mono border border-emerald-100/50">
+                                <div className="bg-orange-50/80 px-2 py-0.5 rounded text-[10px] font-bold text-orange-600 font-mono border border-orange-100/50">
                                     Generated
                                 </div>
                             </div>
 
                             <div className="flex items-center gap-4 py-2.5 group">
-                                <div className="w-8 h-8 rounded-full border-2 border-emerald-500/20 bg-blue-50 flex items-center justify-center text-blue-600 shrink-0 group-hover:border-blue-500/40 transition-colors">
+                                <div className="w-8 h-8 rounded-full border-2 border-orange-500/20 bg-blue-50 flex items-center justify-center text-blue-600 shrink-0 group-hover:border-blue-500/40 transition-colors">
                                     <Calendar size={14} />
                                 </div>
                                 <div className="flex-1 min-w-0">
@@ -211,7 +211,7 @@ export default function Dashboard() {
                             </div>
 
                             <div className="flex items-center gap-4 py-2.5 pb-0 group">
-                                <div className="w-8 h-8 rounded-full border-2 border-emerald-500/20 bg-emerald-50 flex items-center justify-center text-emerald-600 shrink-0 group-hover:border-emerald-500/40 transition-colors">
+                                <div className="w-8 h-8 rounded-full border-2 border-orange-500/20 bg-orange-50 flex items-center justify-center text-orange-600 shrink-0 group-hover:border-orange-500/40 transition-colors">
                                     <CheckCircle2 size={14} />
                                 </div>
                                 <div className="flex-1 min-w-0">
@@ -226,7 +226,7 @@ export default function Dashboard() {
                                         3 days ago
                                     </div>
                                 </div>
-                                <div className="bg-emerald-50/80 px-2 py-0.5 rounded text-[10px] font-bold text-emerald-600 font-mono border border-emerald-100/50">
+                                <div className="bg-orange-50/80 px-2 py-0.5 rounded text-[10px] font-bold text-orange-600 font-mono border border-orange-100/50">
                                     Applied
                                 </div>
                             </div>
@@ -239,7 +239,7 @@ export default function Dashboard() {
                             <h2 className="font-bold flex items-center text-xs font-mono text-slate-800">
                                 Upcoming Interview
                             </h2>
-                            <button className="text-emerald-600 text-[10px] font-mono font-medium flex items-center gap-1 hover:text-emerald-700 transition-colors">
+                            <button className="text-orange-600 text-[10px] font-mono font-medium flex items-center gap-1 hover:text-orange-700 transition-colors">
                                 View all <span>→</span>
                             </button>
                         </div>
@@ -274,9 +274,9 @@ export default function Dashboard() {
                                 <div className="text-slate-600 text-[10px] font-mono leading-relaxed mt-1">
                                     We analyzed the role and your resume.
                                 </div>
-                                <button className="bg-white border border-emerald-400/60 text-emerald-700 px-3 py-1.5 mt-3 rounded-md text-[10px] font-mono flex items-center justify-between gap-1.5 hover:bg-emerald-50 transition-colors w-fit">
+                                <button className="bg-white border border-orange-400/60 text-orange-700 px-3 py-1.5 mt-3 rounded-md text-[10px] font-mono flex items-center justify-between gap-1.5 hover:bg-orange-50 transition-colors w-fit">
                                     View Prep Kit
-                                    <span className="text-emerald-700">→</span>
+                                    <span className="text-orange-700">→</span>
                                 </button>
                             </div>
                         </div>
@@ -289,7 +289,7 @@ export default function Dashboard() {
                             <h3 className="text-xs font-mono font-bold text-slate-800">
                                 Application Pipeline
                             </h3>
-                            <button className="text-[10px] font-mono text-emerald-600 font-medium hover:text-emerald-700">
+                            <button className="text-[10px] font-mono text-orange-600 font-medium hover:text-orange-700">
                                 View full pipeline <span>→</span>
                             </button>
                         </div>
@@ -300,7 +300,7 @@ export default function Dashboard() {
                                     18
                                 </div>
                                 <div className="h-0.5 mt-3 bg-slate-200 rounded-full overflow-hidden">
-                                    <div className="h-full w-[84%] bg-emerald-600"></div>
+                                    <div className="h-full w-[84%] bg-orange-600"></div>
                                 </div>
                             </div>
                             <span className="shrink-0 text-slate-400 text-sm">
@@ -336,7 +336,7 @@ export default function Dashboard() {
                                     1
                                 </div>
                                 <div className="h-0.5 mt-3 bg-slate-200 rounded-full overflow-hidden">
-                                    <div className="h-full w-[8%] bg-violet-500"></div>
+                                    <div className="h-full w-[8%] bg-orange-500"></div>
                                 </div>
                             </div>
                             <span className="shrink-0 text-slate-400 text-sm">
@@ -360,7 +360,7 @@ export default function Dashboard() {
                         <h3 className="text-xs font-mono font-bold text-slate-800">
                             Recent Generated Resumes
                         </h3>
-                        <button className="text-[10px] font-mono text-emerald-600 font-medium hover:text-emerald-700">
+                        <button className="text-[10px] font-mono text-orange-600 font-medium hover:text-orange-700">
                             View all <span>→</span>
                         </button>
                     </div>
@@ -377,7 +377,7 @@ export default function Dashboard() {
                         <span className="flex items-center gap-2">
                             <span>99%</span>
                             <span className="h-0.5 flex-1 bg-slate-200 rounded-full overflow-hidden">
-                                <span className="block h-full w-[99%] bg-emerald-600"></span>
+                                <span className="block h-full w-[99%] bg-orange-600"></span>
                             </span>
                         </span>
                         <span>2 hours ago</span>
@@ -399,7 +399,7 @@ export default function Dashboard() {
                         <span className="flex items-center gap-2">
                             <span>93%</span>
                             <span className="h-0.5 flex-1 bg-slate-200 rounded-full overflow-hidden">
-                                <span className="block h-full w-[93%] bg-emerald-600"></span>
+                                <span className="block h-full w-[93%] bg-orange-600"></span>
                             </span>
                         </span>
                         <span>1 day ago</span>

@@ -402,7 +402,7 @@ export default function ReviewPageClient({ id, pdfEnabled }: { id: string; pdfEn
                         <button
                             onClick={() => setView("code")}
                             className={`flex items-center gap-1.5 px-3 py-1.5 transition-colors ${
-                                view === "code" ? "bg-violet-600 text-white" : "text-muted-foreground hover:text-foreground"
+                                view === "code" ? "bg-orange-600 text-white" : "text-muted-foreground hover:text-foreground"
                             }`}
                         >
                             <Code2 size={12} /> Code
@@ -410,7 +410,7 @@ export default function ReviewPageClient({ id, pdfEnabled }: { id: string; pdfEn
                         <button
                             onClick={() => setView("pdf")}
                             className={`flex items-center gap-1.5 px-3 py-1.5 transition-colors ${
-                                view === "pdf" ? "bg-violet-600 text-white" : "text-muted-foreground hover:text-foreground"
+                                view === "pdf" ? "bg-orange-600 text-white" : "text-muted-foreground hover:text-foreground"
                             }`}
                         >
                             <FileText size={12} /> PDF
@@ -419,7 +419,7 @@ export default function ReviewPageClient({ id, pdfEnabled }: { id: string; pdfEn
                     <button
                         onClick={acceptAll}
                         disabled={accepted.size === changes.length}
-                        className="text-xs font-medium text-violet-400 transition-colors hover:text-violet-300 disabled:cursor-not-allowed disabled:opacity-40"
+                        className="text-xs font-medium text-orange-400 transition-colors hover:text-orange-300 disabled:cursor-not-allowed disabled:opacity-40"
                     >
                         Accept all
                     </button>
