@@ -121,13 +121,13 @@ export default function ResumeEditorClient({
     const isMaster = resume.is_master === 1;
 
     return (
-        <div className="h-screen bg-black font-sans">
+        <div className="h-full font-sans">
             <ResizablePanelGroup
                 orientation="horizontal"
-                className="h-screen w-full"
+                className="h-full w-full"
             >
                 <ResizablePanel defaultSize={50}>
-                    <div className="flex flex-col h-full p-4 gap-3">
+                    <div className="flex flex-col h-full p-4 gap-3 bg-black">
                         <div className="flex items-center justify-between gap-3">
                             <div className="flex items-center gap-2 min-w-0">
                                 <span className="text-white font-medium text-sm truncate">
@@ -181,16 +181,18 @@ export default function ResumeEditorClient({
                 <ResizableHandle withHandle />
 
                 <ResizablePanel defaultSize={50}>
-                    {pdfEnabled ? (
-                        <iframe
-                            key={pdfVersion}
-                            src={`/api/resumes/${numId}/pdf`}
-                            className="w-full h-full"
-                            title="PDF preview"
-                        />
-                    ) : (
-                        <PdfDisabledBanner />
-                    )}
+                    <div className="h-full bg-black">
+                        {pdfEnabled ? (
+                            <iframe
+                                key={pdfVersion}
+                                src={`/api/resumes/${numId}/pdf`}
+                                className="w-full h-full"
+                                title="PDF preview"
+                            />
+                        ) : (
+                            <PdfDisabledBanner />
+                        )}
+                    </div>
                 </ResizablePanel>
             </ResizablePanelGroup>
         </div>
