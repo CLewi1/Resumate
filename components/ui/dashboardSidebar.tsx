@@ -65,7 +65,7 @@ export function DashboardSidebar({ userEmail }: { userEmail?: string }) {
         >
             {/* Header */}
             <div
-                className={`flex items-start pt-8 pb-4 ${
+                className={`flex items-start h-[88px] shrink-0 pt-8 pb-4 ${
                     isCollapsed
                         ? "justify-center px-0"
                         : "px-6 justify-between"
