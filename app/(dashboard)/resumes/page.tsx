@@ -23,10 +23,9 @@ export default function ResumesPage() {
         setLoading(false);
     }, []);
 
-    useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        void fetchResumes();
-    }, [fetchResumes]);
+useEffect(() => {
+    void fetchResumes();
+}, [fetchResumes]);
 
     async function handleCreate() {
         if (!newName.trim()) return;
