@@ -1,26 +1,15 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 "use client";
 
-import {
-    Home,
-    Search,
-    Code,
-    Bookmark,
-    Send,
-    FileText,
-    ChevronDown,
-} from "lucide-react";
+import { Home, Briefcase, FileText, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 const navLinks = [
     { name: "Dashboard", path: "/dashboard", icon: Home },
-    { name: "Search", path: "/search", icon: Search },
-    { name: "Custom Job Gen", path: "/generate", icon: Code },
-    { name: "Bookmarked", path: "/bookmarked", icon: Bookmark },
-    { name: "Applied", path: "/applied", icon: Send },
-    { name: "Resume", path: "/resumes", icon: FileText },
+    { name: "Jobs", path: "/jobs", icon: Briefcase },
+    { name: "Resumes", path: "/resumes", icon: FileText },
 ];
 
 export function DashboardSidebar({ userEmail }: { userEmail?: string }) {
@@ -100,35 +89,6 @@ export function DashboardSidebar({ userEmail }: { userEmail?: string }) {
             </nav>
 
             <div className="px-6 mt-auto w-full flex flex-col gap-6">
-                <div className="border border-slate-800 bg-[#0f172a] rounded-xl p-4 flex flex-col gap-3">
-                    <div className="text-[10px] font-bold text-emerald-400 tracking-wider">
-                        PRO PLAN
-                    </div>
-                    <div>
-                        <div className="flex justify-between items-end mb-2">
-                            <span className="text-[11px] text-slate-400">
-                                Resumes generated
-                            </span>
-                        </div>
-                        <div className="text-sm text-white font-bold mb-2">
-                            12{" "}
-                            <span className="text-slate-500 font-normal">
-                                / 100
-                            </span>
-                        </div>
-                        <div className="w-full bg-slate-800 rounded-full h-1.5 mb-4">
-                            <div
-                                className="bg-emerald-500 h-1.5 rounded-full"
-                                style={{ width: "12%" }}
-                            ></div>
-                        </div>
-                        <button className="w-full py-2 border border-slate-700 rounded-md text-xs text-white hover:bg-slate-800 transition-colors flex items-center justify-center gap-2">
-                            Upgrade Plan{" "}
-                            <span className="text-slate-400">→</span>
-                        </button>
-                    </div>
-                </div>
-
                 <div ref={menuRef} className="relative">
                     <button
                         type="button"
