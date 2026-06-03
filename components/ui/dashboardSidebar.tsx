@@ -19,25 +19,22 @@ const navLinks = [
     { name: "Resumes", path: "/resumes", icon: FileText },
 ];
 
-const STORAGE_KEY = "sidebar-collapsed";
+const COOKIE_KEY = "sidebar-collapsed";
 
-export function DashboardSidebar({ userEmail }: { userEmail?: string }) {
+export function DashboardSidebar({
+    userEmail,
+    defaultCollapsed = false,
+}: {
+    userEmail?: string;
+    defaultCollapsed?: boolean;
+}) {
     const pathname = usePathname();
     const menuRef = useRef<HTMLDivElement | null>(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isCollapsed, setIsCollapsed] = useState(false);
-    const didReadRef = useRef(false);
+    const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
 
     useEffect(() => {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        if (saved !== null) setIsCollapsed(saved === "true");
-        didReadRef.current = true;
-    }, []);
-
-    useEffect(() => {
-        if (!didReadRef.current) return;
-        localStorage.setItem(STORAGE_KEY, String(isCollapsed));
+        document.cookie = `${COOKIE_KEY}=${isCollapsed}; path=/; max-age=31536000; SameSite=Lax`;
     }, [isCollapsed]);
 
     useEffect(() => {
