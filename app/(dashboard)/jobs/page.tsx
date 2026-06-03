@@ -1,7 +1,7 @@
-import SearchClient, { type SearchJob } from "./SearchClient";
+import JobsClient, { type SearchJob } from "./JobsClient";
 import { getJobRepository, type Job } from "@/lib/db/jobs";
 
-type SearchPageProps = {
+type JobsPageProps = {
     searchParams?: Promise<{
         q?: string | string[];
     }>;
@@ -16,7 +16,7 @@ const LOGO_CLASSES = [
     "bg-slate-900 text-white",
 ];
 
-export default async function SearchPage({ searchParams }: SearchPageProps) {
+export default async function JobsPage({ searchParams }: JobsPageProps) {
     const resolvedParams = searchParams ? await searchParams : undefined;
     const q = resolvedParams?.q;
     const query =
@@ -34,7 +34,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     }
 
     return (
-        <SearchClient
+        <JobsClient
             jobs={jobs}
             query={trimmedQuery}
             errorMessage={errorMessage}

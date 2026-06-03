@@ -51,7 +51,7 @@ const quickFilters = [
     "$100k+",
 ];
 
-export default function SearchClient({
+export default function JobsClient({
     jobs,
     query,
     errorMessage,
@@ -90,8 +90,8 @@ export default function SearchClient({
 
             startTransition(() => {
                 const href = params.toString()
-                    ? `/search?${params.toString()}`
-                    : "/search";
+                    ? `/jobs?${params.toString()}`
+                    : "/jobs";
                 router.replace(href);
             });
         }, 350);
@@ -111,8 +111,8 @@ export default function SearchClient({
 
         startTransition(() => {
             const href = params.toString()
-                ? `/search?${params.toString()}`
-                : "/search";
+                ? `/jobs?${params.toString()}`
+                : "/jobs";
             router.replace(href);
         });
     };
@@ -130,7 +130,7 @@ export default function SearchClient({
             <div className="flex items-center mb-4">
                 <div className="flex items-center gap-8">
                     <h1 className="text-4xl leading-none font-bold font-sans">
-                        Search
+                        Jobs
                     </h1>
                     <p className="text-emerald-600 text-sm font-mono">
                         {"// find roles. tailor resume. get interviews."}

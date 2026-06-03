@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Star, X, FileText, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,16 +16,16 @@ export default function ResumesPage() {
     const [newTemplate, setNewTemplate] = useState(TEMPLATES[0].id);
     const [creating, setCreating] = useState(false);
 
-    useEffect(() => {
-        fetchResumes();
-    }, []);
-
-    async function fetchResumes() {
+    const fetchResumes = useCallback(async () => {
         setLoading(true);
         const res = await fetch("/api/resumes");
         if (res.ok) setResumes(await res.json());
         setLoading(false);
-    }
+    }, []);
+
+useEffect(() => {
+    void fetchResumes();
+}, [fetchResumes]);
 
     async function handleCreate() {
         if (!newName.trim()) return;

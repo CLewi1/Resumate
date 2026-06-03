@@ -7,15 +7,13 @@ import {
     FileText,
     Bell,
     Sparkles,
-    Bookmark,
 } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 
 const navLinks = [
     { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-    { name: "Job Tracker", path: "/jobs", icon: Briefcase },
-    { name: "Saved", path: "/saved", icon: Bookmark },
+    { name: "Jobs", path: "/jobs", icon: Briefcase },
     { name: "My Resumes", path: "/resumes", icon: FileText },
 ];
 
