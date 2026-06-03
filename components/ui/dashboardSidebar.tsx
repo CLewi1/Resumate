@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 "use client";
 
-import { Home, Briefcase, Code, FileText, ChevronDown } from "lucide-react";
+import { Home, Briefcase, FileText, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -9,7 +9,6 @@ import { useEffect, useRef, useState } from "react";
 const navLinks = [
     { name: "Dashboard", path: "/dashboard", icon: Home },
     { name: "Jobs", path: "/jobs", icon: Briefcase },
-    { name: "Custom Job Gen", path: "/generate", icon: Code },
     { name: "Resumes", path: "/resumes", icon: FileText },
 ];
 
