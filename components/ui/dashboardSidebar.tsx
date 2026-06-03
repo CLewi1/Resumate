@@ -67,14 +67,25 @@ export function DashboardSidebar({ userEmail }: { userEmail?: string }) {
             <div
                 className={`flex items-start pt-8 pb-4 ${
                     isCollapsed
-                        ? "flex-col items-center gap-3 px-0"
+                        ? "justify-center px-0"
                         : "px-6 justify-between"
                 }`}
             >
                 {isCollapsed ? (
-                    <span className="text-orange-400 font-bold text-xl">
-                        {">_"}
-                    </span>
+                    <button
+                        type="button"
+                        onClick={() => setIsCollapsed(false)}
+                        aria-label="Expand sidebar"
+                        className="group relative flex items-center justify-center w-8 h-8"
+                    >
+                        <span className="text-orange-400 font-bold text-xl transition-opacity duration-150 group-hover:opacity-0">
+                            {">_"}
+                        </span>
+                        <ChevronRight
+                            size={16}
+                            className="absolute text-orange-400 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+                        />
+                    </button>
                 ) : (
                     <div>
                         <div className="font-bold text-xl tracking-tight text-white mb-1 flex items-center gap-2">
@@ -90,20 +101,16 @@ export function DashboardSidebar({ userEmail }: { userEmail?: string }) {
                     </div>
                 )}
 
-                <button
-                    type="button"
-                    onClick={() => setIsCollapsed((c) => !c)}
-                    aria-label={
-                        isCollapsed ? "Expand sidebar" : "Collapse sidebar"
-                    }
-                    className="flex items-center justify-center w-7 h-7 rounded-md text-slate-500 hover:text-orange-400 hover:bg-slate-800/50 transition-colors"
-                >
-                    {isCollapsed ? (
-                        <ChevronRight size={14} />
-                    ) : (
+                {!isCollapsed && (
+                    <button
+                        type="button"
+                        onClick={() => setIsCollapsed(true)}
+                        aria-label="Collapse sidebar"
+                        className="flex items-center justify-center w-7 h-7 rounded-md text-slate-500 hover:text-orange-400 hover:bg-slate-800/50 transition-colors"
+                    >
                         <ChevronLeft size={14} />
-                    )}
-                </button>
+                    </button>
+                )}
             </div>
 
             {/* Nav */}
