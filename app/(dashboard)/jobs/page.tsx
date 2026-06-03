@@ -12,7 +12,7 @@ const LOGO_CLASSES = [
     "bg-orange-600 text-white",
     "bg-green-600 text-white",
     "bg-blue-600 text-white",
-    "bg-orange-600 text-white",
+    "bg-purple-600 text-white",
     "bg-slate-900 text-white",
 ];
 

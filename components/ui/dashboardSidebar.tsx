@@ -65,7 +65,7 @@ export function DashboardSidebar({
                 <div className="flex items-center gap-3 h-7">
                     <button
                         type="button"
-                        onClick={() => setIsCollapsed((c) => !c)}
+                        onClick={() => { setIsCollapsed((c) => !c); setIsMenuOpen(false); }}
                         aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
                         className="group relative flex items-center justify-center shrink-0"
                     >
@@ -86,7 +86,7 @@ export function DashboardSidebar({
                             </span>
                             <button
                                 type="button"
-                                onClick={() => setIsCollapsed(true)}
+                                onClick={() => { setIsCollapsed(true); setIsMenuOpen(false); }}
                                 aria-label="Collapse sidebar"
                                 className="ml-auto shrink-0 flex items-center justify-center w-7 h-7 rounded-md text-slate-500 hover:text-orange-400 hover:bg-slate-800/50 transition-colors"
                             >
