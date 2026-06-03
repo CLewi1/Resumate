@@ -115,6 +115,7 @@ export function DashboardSidebar({
                             key={link.path}
                             href={link.path}
                             title={isCollapsed ? link.name : undefined}
+                            aria-label={isCollapsed ? link.name : undefined}
                             className={`relative flex items-center gap-3 py-3 px-[19px] text-sm font-medium transition-colors group ${
                                 isActive
                                     ? "bg-orange-900/20 text-orange-400"
