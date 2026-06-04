@@ -132,7 +132,7 @@ export default function JobsClient({
                     <h1 className="text-4xl leading-none font-bold font-sans">
                         Jobs
                     </h1>
-                    <p className="text-emerald-600 text-sm font-mono">
+                    <p className="text-orange-600 text-sm font-mono">
                         {"// find roles. tailor resume. get interviews."}
                     </p>
                 </div>
@@ -178,14 +178,14 @@ export default function JobsClient({
                         <button
                             type="button"
                             onClick={() => setIsListView(true)}
-                            className={`px-2 py-1 rounded ${isListView ? "bg-emerald-600 text-white" : "text-slate-600 hover:bg-slate-50"}`}
+                            className={`px-2 py-1 rounded ${isListView ? "bg-orange-600 text-white" : "text-slate-600 hover:bg-slate-50"}`}
                         >
                             <List size={14} />
                         </button>
                         <button
                             type="button"
                             onClick={() => setIsListView(false)}
-                            className={`px-2 py-1 rounded ${!isListView ? "bg-emerald-600 text-white" : "text-slate-600 hover:bg-slate-50"}`}
+                            className={`px-2 py-1 rounded ${!isListView ? "bg-orange-600 text-white" : "text-slate-600 hover:bg-slate-50"}`}
                         >
                             <Grid2x2 size={14} />
                         </button>
@@ -200,7 +200,7 @@ export default function JobsClient({
                         <button
                             key={filter}
                             type="button"
-                            className={`text-xs font-mono px-3 py-1 rounded-md border ${index === 0 ? "border-emerald-300 bg-emerald-50 text-emerald-700" : "border-slate-200 text-slate-700 hover:bg-slate-50"}`}
+                            className={`text-xs font-mono px-3 py-1 rounded-md border ${index === 0 ? "border-orange-300 bg-orange-50 text-orange-700" : "border-slate-200 text-slate-700 hover:bg-slate-50"}`}
                         >
                             {filter}
                         </button>
@@ -225,7 +225,7 @@ export default function JobsClient({
                             <span>SALARY</span>
                             <span className="flex items-center gap-1">
                                 POSTED{" "}
-                                <span className="text-emerald-600">↓</span>
+                                <span className="text-orange-600">↓</span>
                             </span>
                             <span></span>
                         </div>
@@ -244,7 +244,7 @@ export default function JobsClient({
                                         key={job.id}
                                         type="button"
                                         onClick={() => setSelectedId(job.id)}
-                                        className={`w-full text-left px-3 py-4 grid grid-cols-[2.5fr_0.75fr_0.65fr_0.8fr_0.7fr_0.3fr] gap-3 transition-colors border-l-2 ${selected ? "bg-emerald-50/40 border-l-emerald-500" : "border-l-transparent hover:bg-slate-50"}`}
+                                        className={`w-full text-left px-3 py-4 grid grid-cols-[2.5fr_0.75fr_0.65fr_0.8fr_0.7fr_0.3fr] gap-3 transition-colors border-l-2 ${selected ? "bg-orange-50/40 border-l-orange-500" : "border-l-transparent hover:bg-slate-50"}`}
                                     >
                                         <div className="flex gap-3 min-w-0">
                                             <div
@@ -254,7 +254,7 @@ export default function JobsClient({
                                             </div>
                                             <div className="min-w-0">
                                                 <div
-                                                    className={`text-[1.05rem] leading-tight font-sans font-bold truncate ${selected ? "text-emerald-700" : "text-slate-900"}`}
+                                                    className={`text-[1.05rem] leading-tight font-sans font-bold truncate ${selected ? "text-orange-700" : "text-slate-900"}`}
                                                 >
                                                     {job.role}
                                                 </div>
@@ -364,7 +364,7 @@ export default function JobsClient({
                                         {selectedJob.tags.map((tag) => (
                                             <span
                                                 key={tag}
-                                                className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200"
+                                                className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-orange-50 text-orange-700 border border-orange-200"
                                             >
                                                 {tag}
                                             </span>
@@ -380,7 +380,7 @@ export default function JobsClient({
                                     <div className="flex items-center gap-8 text-sm font-mono text-slate-500">
                                         <button
                                             type="button"
-                                            className="pb-2 border-b-2 border-emerald-600 text-slate-900 font-bold"
+                                            className="pb-2 border-b-2 border-orange-600 text-slate-900 font-bold"
                                         >
                                             Overview
                                         </button>
@@ -405,7 +405,7 @@ export default function JobsClient({
                                                         key={bullet}
                                                         className="flex items-start gap-2"
                                                     >
-                                                        <span className="text-emerald-600 mt-0.5">
+                                                        <span className="text-orange-600 mt-0.5">
                                                             ›
                                                         </span>
                                                         <span>{bullet}</span>
@@ -437,7 +437,7 @@ export default function JobsClient({
                                         onClick={() =>
                                             openApplyUrl(selectedJob.applyUrl)
                                         }
-                                        className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-md px-6 py-2 text-sm font-mono font-medium flex items-center gap-2 disabled:cursor-not-allowed disabled:opacity-60"
+                                        className="bg-orange-600 hover:bg-orange-700 text-white rounded-md px-6 py-2 text-sm font-mono font-medium flex items-center gap-2 disabled:cursor-not-allowed disabled:opacity-60"
                                         disabled={!selectedJob.applyUrl}
                                     >
                                         Apply now <span>→</span>

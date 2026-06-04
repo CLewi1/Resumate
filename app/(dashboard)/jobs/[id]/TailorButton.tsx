@@ -23,7 +23,7 @@ export function TailorButton({
         return (
             <Link
                 href={`/resumes/${existingResumeId}`}
-                className="inline-flex items-center rounded-md border border-violet-600/40 px-4 py-2 text-sm font-semibold text-violet-400 hover:bg-violet-600/10 transition-colors"
+                className="inline-flex items-center rounded-md border border-orange-600/40 px-4 py-2 text-sm font-semibold text-orange-400 hover:bg-orange-600/10 transition-colors"
             >
                 Already generated resume. View →
             </Link>
@@ -58,7 +58,7 @@ export function TailorButton({
             <button
                 onClick={handleClick}
                 disabled={state.status === "loading"}
-                className="inline-flex items-center rounded-md border border-violet-600 px-4 py-2 text-sm font-semibold text-violet-400 hover:bg-violet-600/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="inline-flex items-center rounded-md border border-orange-600 px-4 py-2 text-sm font-semibold text-orange-400 hover:bg-orange-600/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 {state.status === "loading" ? "Tailoring…" : "Tailor my resume"}
             </button>

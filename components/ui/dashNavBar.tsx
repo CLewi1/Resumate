@@ -41,11 +41,11 @@ export function NavBar({ userEmail }: NavBarProps) {
                     className="flex items-center gap-2 font-bold text-xl tracking-tight cursor-pointer"
                     onClick={() => onNavigate("/")}
                 >
-                    <div className="w-8 h-8 bg-linear-to-tr from-violet-600 to-indigo-600 rounded-lg flex items-center justify-center text-white">
+                    <div className="w-8 h-8 bg-linear-to-tr from-orange-600 to-orange-500 rounded-lg flex items-center justify-center text-white">
                         <Cpu size={18} />
                     </div>
                     <span>
-                        Resu<span className="text-violet-400">M8</span>
+                        Resu<span className="text-orange-400">M8</span>
                     </span>
                 </div>
 
@@ -79,7 +79,7 @@ export function NavBar({ userEmail }: NavBarProps) {
                                 <Icon
                                     size={16}
                                     className={`relative z-10 ${
-                                        isActive ? "text-violet-400" : ""
+                                        isActive ? "text-orange-400" : ""
                                     }`}
                                 />
                                 <span className="relative z-10">
@@ -99,7 +99,7 @@ export function NavBar({ userEmail }: NavBarProps) {
 
                     <div className="h-6 w-px bg-slate-800 mx-2 hidden sm:block"></div>
 
-                    <button className="hidden sm:flex bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-lg text-sm font-medium items-center gap-2 transition-colors shadow-lg shadow-violet-900/20">
+                    <button className="hidden sm:flex bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg text-sm font-medium items-center gap-2 transition-colors shadow-lg shadow-orange-900/20">
                         <Sparkles size={16} /> New Resume
                     </button>
 
@@ -116,7 +116,7 @@ export function NavBar({ userEmail }: NavBarProps) {
                             <p className="text-sm font-medium text-white truncate leading-none mb-1">
                                 {userEmail ?? "Signed In"}
                             </p>
-                            <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider leading-none">
+                            <p className="text-[10px] text-orange-400 font-bold uppercase tracking-wider leading-none">
                                 Pro Plan
                             </p>
                         </div>
