@@ -37,6 +37,7 @@ export type SearchJob = {
 type SearchClientProps = {
     jobs: SearchJob[];
     query: string;
+    selectedId?: number;
     errorMessage?: string;
 };
 
@@ -54,21 +55,29 @@ const quickFilters = [
 export default function JobsClient({
     jobs,
     query,
+    selectedId: initialSelectedId,
     errorMessage,
 }: SearchClientProps) {
-    const [selectedId, setSelectedId] = useState(() => jobs[0]?.id ?? 0);
+    const [selectedId, setSelectedId] = useState<number | null>(() => {
+        if (initialSelectedId !== undefined) {
+            return jobs.find((j) => j.id === initialSelectedId)?.id ?? null;
+        }
+        return jobs[0]?.id ?? null;
+    });
     const [isListView, setIsListView] = useState(true);
     const [searchTerm, setSearchTerm] = useState(query);
     const [, startTransition] = useTransition();
     const router = useRouter();
 
     const selectedJob =
-        jobs.find((job) => job.id === selectedId) ?? jobs[0] ?? null;
+        selectedId !== null
+            ? (jobs.find((job) => job.id === selectedId) ?? null)
+            : null;
     const hasResults = jobs.length > 0;
 
     useEffect(() => {
-        if (!jobs.find((job) => job.id === selectedId)) {
-            setSelectedId(jobs[0]?.id ?? 0);
+        if (selectedId !== null && !jobs.find((job) => job.id === selectedId)) {
+            setSelectedId(jobs[0]?.id ?? null);
         }
     }, [jobs, selectedId]);
 
