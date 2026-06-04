@@ -25,4 +25,12 @@ describe("JobDetailPage /jobs/[id]", () => {
         );
         expect(mockRedirect).toHaveBeenCalledWith("/jobs?selected=abc");
     });
+
+    test("encodes special characters to prevent query-string injection", async () => {
+        mockRedirect.mockClear();
+        await JobDetailPage({ params: Promise.resolve({ id: "&foo=bar" }) }).catch(
+            () => {}
+        );
+        expect(mockRedirect).toHaveBeenCalledWith("/jobs?selected=%26foo%3Dbar");
+    });
 });
