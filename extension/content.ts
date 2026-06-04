@@ -28,7 +28,11 @@ function scrapeJob(): {
         .replace(/[…\.]{0,3}more\s*$/i, "")
         .trimEnd();
 
-    const linkedinUrl = window.location.href.split("?")[0];
+    const linkedinUrl = isListView
+        ? (document
+              .querySelector<HTMLAnchorElement>('a[href*="/jobs/view/"]')
+              ?.href.split("?")[0] ?? window.location.href.split("?")[0])
+        : window.location.href.split("?")[0];
 
     if (!title || !company || !description) return null;
     return { title, company, description, linkedinUrl };

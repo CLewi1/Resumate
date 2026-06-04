@@ -4,6 +4,7 @@ import { getJobRepository, type Job } from "@/lib/db/jobs";
 type JobsPageProps = {
     searchParams?: Promise<{
         q?: string | string[];
+        selected?: string | string[];
     }>;
 };
 
@@ -23,6 +24,19 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
         typeof q === "string" ? q : Array.isArray(q) ? (q[0] ?? "") : "";
     const trimmedQuery = query.trim();
 
+    const rawSelected = resolvedParams?.selected;
+    const selectedParam =
+        typeof rawSelected === "string"
+            ? rawSelected
+            : Array.isArray(rawSelected)
+              ? (rawSelected[0] ?? "")
+              : "";
+    const selectedId: number | null | undefined = (() => {
+        if (!selectedParam) return undefined;
+        const n = Number(selectedParam);
+        return Number.isNaN(n) ? null : n;
+    })();
+
     let jobs: SearchJob[] = [];
     let errorMessage: string | undefined;
 
@@ -37,6 +51,7 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
         <JobsClient
             jobs={jobs}
             query={trimmedQuery}
+            selectedId={selectedId}
             errorMessage={errorMessage}
         />
     );
