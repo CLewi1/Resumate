@@ -31,7 +31,11 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
             : Array.isArray(rawSelected)
               ? (rawSelected[0] ?? "")
               : "";
-    const selectedId = Number(selectedParam) || undefined;
+    const selectedId: number | null | undefined = (() => {
+        if (!selectedParam) return undefined;
+        const n = Number(selectedParam);
+        return Number.isNaN(n) ? null : n;
+    })();
 
     let jobs: SearchJob[] = [];
     let errorMessage: string | undefined;

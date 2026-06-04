@@ -37,7 +37,7 @@ export type SearchJob = {
 type SearchClientProps = {
     jobs: SearchJob[];
     query: string;
-    selectedId?: number;
+    selectedId?: number | null;
     errorMessage?: string;
 };
 
@@ -59,10 +59,9 @@ export default function JobsClient({
     errorMessage,
 }: SearchClientProps) {
     const [selectedId, setSelectedId] = useState<number | null>(() => {
-        if (initialSelectedId !== undefined) {
-            return jobs.find((j) => j.id === initialSelectedId)?.id ?? null;
-        }
-        return jobs[0]?.id ?? null;
+        if (initialSelectedId === undefined) return jobs[0]?.id ?? null;
+        if (initialSelectedId === null) return null;
+        return jobs.find((j) => j.id === initialSelectedId)?.id ?? null;
     });
     const [isListView, setIsListView] = useState(true);
     const [searchTerm, setSearchTerm] = useState(query);
